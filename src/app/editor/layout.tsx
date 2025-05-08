@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { ShareIcon } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +17,7 @@ export default function EditorLayout({
       <div className="fixed h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
       <div className="fixed left-1/2 transform -translate-x-1/2 max-w-7xl w-full h-screen border border-dashed"></div>
       <div className="min-h-14 border border-dashed">
-        <header className="max-w-7xl mx-auto h-14 flex items-center px-8 py-4">
+        <header className="max-w-7xl mx-auto h-14 flex items-center px-8 py-4 justify-between">
           <div className="flex items-center gap-2">
             <img
               src="/logo.webp"
@@ -23,6 +25,13 @@ export default function EditorLayout({
               className="size-8 object-contain"
             />
             <h1 className="text-2xl font-bold">Flashclip</h1>
+          </div>
+          <div>
+            <Button>
+              <ShareIcon className="size-4" />
+              Export
+            </Button>
+            {/* TODO: Avatar */}
           </div>
         </header>
       </div>
