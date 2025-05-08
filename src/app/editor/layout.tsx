@@ -27,7 +27,7 @@ export default function EditorLayout({
             <h1 className="text-2xl font-bold">Flashclip</h1>
           </div>
           <div>
-            <Button>
+            <Button className="min-w-28">
               <ShareIcon className="size-4" />
               Export
             </Button>
