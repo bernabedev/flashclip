@@ -11,6 +11,7 @@ interface FileUploaderProps {
   accept?: string;
   placeholderAccept?: string;
   className?: string;
+  containerClassName?: string;
 }
 
 export default function FileUploader({
@@ -18,6 +19,7 @@ export default function FileUploader({
   accept = "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
   placeholderAccept = "SVG, PNG, JPG or GIF",
   className,
+  containerClassName,
 }: FileUploaderProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 2MB default
 
@@ -40,8 +42,8 @@ export default function FileUploader({
   // const fileName = files[0]?.file.name || null;
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      <div className="relative">
+    <div className={cn("flex flex-col gap-2", containerClassName)}>
+      <div className={cn("relative", className)}>
         {/* Drop area */}
         <div
           onDragEnter={handleDragEnter}

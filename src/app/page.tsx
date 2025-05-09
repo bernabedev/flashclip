@@ -54,7 +54,8 @@ export default function Home() {
       </div>
       <main className="flex flex-1 flex-col max-w-xl mx-auto w-full px-8 py-4 justify-center items-center">
         <FileUploader
-          className="w-full  bg-white"
+          className="w-full bg-white"
+          containerClassName="w-full"
           maxSizeMB={100}
           placeholderAccept="MP4, MOV, OGG, WEBM, 3GP"
           accept="video/mp4,video/mpeg,video/quicktime,video/ogg,video/webm,video/3gpp"
