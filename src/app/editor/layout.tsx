@@ -15,7 +15,7 @@ export default function EditorLayout({
   return (
     <div className="relative flex min-h-svh flex-col">
       <div className="fixed h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-      <div className="fixed left-1/2 transform -translate-x-1/2 max-w-7xl w-full h-screen border border-dashed border-slate-200/90"></div>
+      <div className="fixed left-1/2 transform -translate-x-1/2 max-w-7xl 2xl:w-[calc(100%-16rem)] xl:w-full w-[calc(100%-3.5rem)] h-screen border border-dashed border-slate-200/90"></div>
       <div className="min-h-14 border border-dashed border-slate-200/90">
         <header className="max-w-7xl mx-auto h-14 flex items-center px-8 py-4 justify-between">
           <div className="flex items-center gap-2">
