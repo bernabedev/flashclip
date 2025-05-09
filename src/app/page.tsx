@@ -53,7 +53,12 @@ export default function Home() {
         </header>
       </div>
       <main className="flex flex-1 flex-col max-w-xl mx-auto w-full px-8 py-4 justify-center items-center">
-        <FileUploader className="w-full  bg-white" />
+        <FileUploader
+          className="w-full  bg-white"
+          maxSizeMB={100}
+          placeholderAccept="MP4, MOV, OGG, WEBM, 3GP"
+          accept="video/mp4,video/mpeg,video/quicktime,video/ogg,video/webm,video/3gpp"
+        />
         <hr className="my-8" />
         <div className="flex gap-2">
           <Input

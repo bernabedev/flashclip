@@ -8,11 +8,15 @@ import { cn } from "@/lib/utils";
 
 interface FileUploaderProps {
   maxSizeMB?: number;
+  accept?: string;
+  placeholderAccept?: string;
   className?: string;
 }
 
 export default function FileUploader({
   maxSizeMB = 2,
+  accept = "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
+  placeholderAccept = "SVG, PNG, JPG or GIF",
   className,
 }: FileUploaderProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 2MB default
@@ -29,7 +33,7 @@ export default function FileUploader({
       getInputProps,
     },
   ] = useFileUpload({
-    accept: "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
+    accept,
     maxSize,
   });
   const previewUrl = files[0]?.preview || null;
@@ -70,7 +74,7 @@ export default function FileUploader({
               </div>
               <p className="mb-1.5 text-sm font-medium">Drop your image here</p>
               <p className="text-muted-foreground text-xs">
-                SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
+                {placeholderAccept} (max. {maxSizeMB}MB)
               </p>
               <Button
                 variant="outline"
