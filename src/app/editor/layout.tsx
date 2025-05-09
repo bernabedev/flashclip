@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 import { ShareIcon } from "lucide-react";
 import { Metadata } from "next";
 
@@ -26,12 +27,23 @@ export default function EditorLayout({
             />
             <h1 className="text-2xl font-bold">Flashclip</h1>
           </div>
-          <div>
+          <div className="flex items-center gap-4">
             <Button className="min-w-28">
               <ShareIcon className="size-4" />
               Export
             </Button>
-            {/* TODO: Avatar */}
+            <SignedIn>
+              <UserButton
+                fallback={
+                  <div className="size-8 rounded-full bg-slate-200 animate-pulse"></div>
+                }
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "!size-8",
+                  },
+                }}
+              />
+            </SignedIn>
           </div>
         </header>
       </div>
