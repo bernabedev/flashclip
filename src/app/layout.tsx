@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Flashclip",
+  title: {
+    template: "%s | Flashclip",
+    default: "Flashclip - The best way to create clips",
+  },
   description: "Flashclip - The best way to create clips",
 };
 
