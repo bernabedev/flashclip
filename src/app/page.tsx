@@ -1,4 +1,6 @@
+import FileUploader from "@/components/file-uploader";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   SignedIn,
   SignedOut,
@@ -50,8 +52,16 @@ export default function Home() {
           </div>
         </header>
       </div>
-      <main className="flex flex-1 flex-col max-w-7xl mx-auto w-full px-8 py-4">
-        <div>Home</div>
+      <main className="flex flex-1 flex-col max-w-xl mx-auto w-full px-8 py-4 justify-center items-center">
+        <FileUploader className="w-full  bg-white" />
+        <hr className="my-8" />
+        <div className="flex gap-2">
+          <Input
+            placeholder="Enter Twitch Clip URL"
+            className="bg-white w-96"
+          />
+          <Button className="min-w-32">Generate</Button>
+        </div>
       </main>
       <div className="min-h-14 border border-dashed border-slate-200/90">
         <footer className="max-w-7xl mx-auto"></footer>
