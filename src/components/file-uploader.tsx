@@ -12,6 +12,7 @@ interface FileUploaderProps {
   placeholderAccept?: string;
   className?: string;
   containerClassName?: string;
+  onFileUpload?: (file: File) => void;
 }
 
 export default function FileUploader({
@@ -20,6 +21,7 @@ export default function FileUploader({
   placeholderAccept = "SVG, PNG, JPG or GIF",
   className,
   containerClassName,
+  onFileUpload,
 }: FileUploaderProps) {
   const maxSize = maxSizeMB * 1024 * 1024; // 2MB default
 
@@ -37,6 +39,11 @@ export default function FileUploader({
   ] = useFileUpload({
     accept,
     maxSize,
+    onFilesChange: (files) => {
+      if (files.length > 0) {
+        onFileUpload?.(files[0].file as File);
+      }
+    },
   });
   const previewUrl = files[0]?.preview || null;
   // const fileName = files[0]?.file.name || null;

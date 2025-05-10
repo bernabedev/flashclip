@@ -1,6 +1,5 @@
-import FileUploader from "@/components/file-uploader";
+import GetClip from "@/components/get_clip";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   SignedIn,
   SignedOut,
@@ -53,21 +52,7 @@ export default function Home() {
         </header>
       </div>
       <main className="flex flex-1 flex-col max-w-xl mx-auto w-full px-8 py-4 justify-center items-center">
-        <FileUploader
-          className="w-full bg-white"
-          containerClassName="w-full"
-          maxSizeMB={100}
-          placeholderAccept="MP4, MOV, OGG, WEBM, 3GP"
-          accept="video/mp4,video/mpeg,video/quicktime,video/ogg,video/webm,video/3gpp"
-        />
-        <hr className="my-8" />
-        <div className="flex gap-2">
-          <Input
-            placeholder="Enter Twitch Clip URL"
-            className="bg-white w-96"
-          />
-          <Button className="min-w-32">Generate</Button>
-        </div>
+        <GetClip />
       </main>
       <div className="min-h-14 border border-dashed border-slate-200/90">
         <footer className="max-w-7xl mx-auto h-14 flex justify-between items-center px-8 py-4">
