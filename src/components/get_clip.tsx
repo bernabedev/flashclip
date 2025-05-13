@@ -46,8 +46,8 @@ export default function GetClip() {
             0,
             200
           )}`;
-        } catch (e) {
-          // Failed to read error text
+        } catch (e: unknown) {
+          console.error("Failed to read error text:", e);
         }
         const errorMessage = `Failed to download clip. Status: ${response.status}.${errorDetail}`;
         console.error(errorMessage);
