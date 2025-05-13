@@ -387,75 +387,73 @@ export default function Editor({ videoFile }: EditorProps) {
         {" "}
         <h1 className="text-2xl font-bold">Video Clipper</h1>{" "}
       </header>
-      <main className="flex-grow grid grid-cols-1 lg:grid-cols-[minmax(0,_3fr)_minmax(0,_1fr)] gap-4 p-4 overflow-hidden">
-        <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
-          <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
-            <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
-              INPUT STAGE
-            </h2>
-            <div className="flex-grow flex items-center justify-center relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
-              <VideoStage
-                videoSrc={videoSrc}
-                layers={layers}
-                selectedLayerId={selectedLayerId}
-                currentTime={currentTime}
-                videoElementRef={
-                  videoElementRef as React.RefObject<HTMLVideoElement>
-                }
-                inputVideoDimensions={inputVideoDimensions}
-                onLayerUpdate={handleLayerUpdate}
-                onLayerSelect={handleLayerSelect}
-                onTimeUpdate={handleTimeUpdate}
-                onDurationChange={handleDurationChange}
-                onLoadedMetadata={handleLoadedMetadata}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
-            <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
-              OUTPUT PREVIEW ({LayoutVariantNames[outputLayout]})
-            </h2>
-            <div className="flex-grow relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
-              <OutputPreview
-                layout={outputLayout}
-                outputOptions={outputOptions}
-                sourceVideoElement={videoElementRef.current}
-                isPlaying={isPlaying}
-                currentTime={currentTime}
-                layers={layers}
-                inputVideoDimensions={inputVideoDimensions}
-                isVideoReady={isVideoMetadataLoaded}
-              />
-            </div>
+      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+        <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
+          <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
+            INPUT STAGE
+          </h2>
+          <div className="flex-grow flex items-center justify-center relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
+            <VideoStage
+              videoSrc={videoSrc}
+              layers={layers}
+              selectedLayerId={selectedLayerId}
+              currentTime={currentTime}
+              videoElementRef={
+                videoElementRef as React.RefObject<HTMLVideoElement>
+              }
+              inputVideoDimensions={inputVideoDimensions}
+              onLayerUpdate={handleLayerUpdate}
+              onLayerSelect={handleLayerSelect}
+              onTimeUpdate={handleTimeUpdate}
+              onDurationChange={handleDurationChange}
+              onLoadedMetadata={handleLoadedMetadata}
+            />
           </div>
         </div>
-        <div className="flex-shrink-0 mt-2">
-          {" "}
-          <Timeline
-            currentTime={currentTime}
-            duration={duration}
-            isPlaying={isPlaying}
-            onSeek={handleSeek}
-            onPlayPause={handlePlayPause}
-            disabled={isAppDisabled || duration <= 0}
-          />{" "}
+        <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden max-h-[calc(100vh-32rem)]">
+          <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
+            OUTPUT PREVIEW ({LayoutVariantNames[outputLayout]})
+          </h2>
+          <div className="flex-grow relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
+            <OutputPreview
+              layout={outputLayout}
+              outputOptions={outputOptions}
+              sourceVideoElement={videoElementRef.current}
+              isPlaying={isPlaying}
+              currentTime={currentTime}
+              layers={layers}
+              inputVideoDimensions={inputVideoDimensions}
+              isVideoReady={isVideoMetadataLoaded}
+            />
+          </div>
         </div>
-        <div className="order-2 h-full overflow-hidden">
-          {" "}
-          <SettingsPanel
-            outputLayout={outputLayout}
-            outputOptions={outputOptions}
-            onLayoutChange={setOutputLayout}
-            onOutputOptionsChange={handleOutputOptionsChange}
-            layers={layers}
-            selectedLayerId={selectedLayerId}
-            onLayerUpdate={handleLayerUpdate}
-            onLayerSelect={handleLayerSelect}
-            disabled={isAppDisabled}
-            onClipCreate={handleCreateClip}
-          />{" "}
-        </div>
-      </main>
+      </div>
+      <div className="flex-shrink-0 mt-2">
+        {" "}
+        <Timeline
+          currentTime={currentTime}
+          duration={duration}
+          isPlaying={isPlaying}
+          onSeek={handleSeek}
+          onPlayPause={handlePlayPause}
+          disabled={isAppDisabled || duration <= 0}
+        />{" "}
+      </div>
+      <div className="order-2 h-full overflow-hidden fixed right-4 z-50 max-w-[22rem]">
+        {" "}
+        <SettingsPanel
+          outputLayout={outputLayout}
+          outputOptions={outputOptions}
+          onLayoutChange={setOutputLayout}
+          onOutputOptionsChange={handleOutputOptionsChange}
+          layers={layers}
+          selectedLayerId={selectedLayerId}
+          onLayerUpdate={handleLayerUpdate}
+          onLayerSelect={handleLayerSelect}
+          disabled={isAppDisabled}
+          onClipCreate={handleCreateClip}
+        />{" "}
+      </div>
     </div>
   );
 }

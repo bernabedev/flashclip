@@ -52,7 +52,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <Card className={`h-full overflow-y-auto ${disabled ? "bg-muted/50" : ""}`}>
+    <Card className={`h-full overflow-y-auto border-none`}>
       <CardHeader>
         <CardTitle>Settings & Layers</CardTitle>
       </CardHeader>
