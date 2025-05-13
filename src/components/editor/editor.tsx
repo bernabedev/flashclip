@@ -307,20 +307,31 @@ export default function Editor({ videoFile }: EditorProps) {
     console.log({
       clipInstructions: JSON.stringify(clipInstructions, null, 2),
     });
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    const success = true;
-    if (success) {
-      toast.success("Clip Instructions Sent (Simulated)", {
-        id: "clip-process",
-        description: "Check console for the JSON payload.",
+    const formData = new FormData();
+    formData.append("video", videoFile);
+    formData.append("instructions", JSON.stringify(clipInstructions));
+    try {
+      const res = await fetch("https://api.flashclip.app/clip/process", {
+        method: "POST",
+        body: formData,
       });
-    } else {
-      toast.error("Failed to Send Clip Instructions (Simulated)", {
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
+      toast.success("Clip processed successfully", {
         id: "clip-process",
-        description: "See console/network tab for details.",
+        description: data.outputMetadata.filename_suggestion,
       });
+    } catch (error) {
+      console.error("Error processing clip:", error);
+      toast.error("Failed to process clip", {
+        id: "clip-process",
+        description: "See console for details.",
+      });
+    } finally {
+      setIsClipping(false);
     }
-    setIsClipping(false);
   };
 
   const isAppDisabled = !isVideoMetadataLoaded;
