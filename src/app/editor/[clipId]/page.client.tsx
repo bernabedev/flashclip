@@ -1,5 +1,6 @@
 "use client";
 
+import Editor from "@/components/editor/editor";
 import { getVideoFromDB } from "@/lib/save-clip-local";
 import { useEffect, useState } from "react";
 
@@ -13,11 +14,6 @@ export default function EditorClipPage({ clipId }: { clipId: string }) {
       }
     };
     loadVideo();
-  }, []);
-  return (
-    <div>
-      Editor {clipId}{" "}
-      {videoFile && <video src={URL.createObjectURL(videoFile)} controls />}
-    </div>
-  );
+  }, [clipId]);
+  return <Editor videoFile={videoFile} />;
 }
