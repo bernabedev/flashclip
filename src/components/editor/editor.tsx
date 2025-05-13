@@ -132,7 +132,7 @@ export default function Editor({ videoFile }: EditorProps) {
         const contentHeight = videoHeight;
 
         // --- Robust Size Calculation ---
-        const targetCameraWidth = Math.min(320, videoWidth * 0.25);
+        const targetCameraWidth = Math.min(480, videoWidth * 0.25);
         // Ensure minimum width of 1px
         const cameraWidth = Math.max(1, targetCameraWidth);
         // Calculate height based on potentially clamped width
@@ -154,12 +154,35 @@ export default function Editor({ videoFile }: EditorProps) {
           },
           camera: {
             id: "camera",
-            x: 20,
-            y: 20,
+            x: contentWidth - cameraWidth,
+            y: contentHeight - cameraHeight,
             width: cameraWidth,
             height: cameraHeight,
             rotation: 0,
-            zIndex: 2,
+            zIndex: 10,
+            visible: true,
+          },
+        });
+
+        console.log({
+          content: {
+            id: "content",
+            x: 0,
+            y: 0,
+            width: contentWidth,
+            height: contentHeight,
+            rotation: 0,
+            zIndex: 1,
+            visible: true,
+          },
+          camera: {
+            id: "camera",
+            x: contentWidth - cameraWidth,
+            y: contentHeight - cameraHeight,
+            width: cameraWidth,
+            height: cameraHeight,
+            rotation: 0,
+            zIndex: 10,
             visible: true,
           },
         });
@@ -381,9 +404,9 @@ export default function Editor({ videoFile }: EditorProps) {
   const isAppDisabled = !isVideoMetadataLoaded;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[calc(100vh-10rem)]">
       <Toaster position="top-right" richColors closeButton />
-      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden">
         <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
           <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
             INPUT STAGE
