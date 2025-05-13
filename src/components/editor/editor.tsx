@@ -440,7 +440,6 @@ export default function Editor({ videoFile }: EditorProps) {
         />{" "}
       </div>
       <div className="order-2 h-full overflow-hidden fixed right-4 z-50 max-w-[22rem]">
-        {" "}
         <SettingsPanel
           outputLayout={outputLayout}
           outputOptions={outputOptions}
@@ -452,7 +451,7 @@ export default function Editor({ videoFile }: EditorProps) {
           onLayerSelect={handleLayerSelect}
           disabled={isAppDisabled}
           onClipCreate={handleCreateClip}
-        />{" "}
+        />
       </div>
     </div>
   );
