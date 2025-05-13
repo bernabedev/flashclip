@@ -321,7 +321,7 @@ export default function Editor({ videoFile }: EditorProps) {
       }
       toast.success("Clip processed successfully", {
         id: "clip-process",
-        description: data.outputMetadata.filename_suggestion,
+        description: data.message,
       });
     } catch (error) {
       console.error("Error processing clip:", error);
