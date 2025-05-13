@@ -347,7 +347,7 @@ export default function Editor({ videoFile }: EditorProps) {
             INPUT
           </h2>
           <div
-            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
+            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner "
             style={{
               aspectRatio: inputContainerAspectRatio,
               maxHeight: "400px",

@@ -290,7 +290,7 @@ const VideoStage: React.FC<VideoStageProps> = ({
   return (
     <div
       ref={stageRef}
-      className="relative w-full bg-black overflow-hidden border border-muted rounded-md shadow-inner"
+      className="relative w-full bg-black border border-muted rounded-md shadow-inner"
       style={{
         aspectRatio: stageAspectRatio,
         perspective: "1000px", // For potential 3D transforms if needed later
