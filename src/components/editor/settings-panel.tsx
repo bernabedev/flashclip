@@ -61,9 +61,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <Card className="h-full max-h-[calc(100vh-10rem)] overflow-y-auto border-l">
+    <Card className="h-full max-h-[calc(100vh-10rem)] overflow-y-auto border-l pt-0">
       {/* Subtle background, shadow */}
-      <CardHeader className="sticky top-0 bg-card/80 backdrop-blur-sm z-10 border-b px-4 !pb-2">
+      <CardHeader className="sticky top-0 bg-card/80 backdrop-blur-sm z-10 border-b px-4 pt-4 !pb-2">
         {/* Sticky header */}
         <CardTitle className="flex items-center text-xl">
           <SettingsIcon className="mr-2 h-6 w-6 text-primary" />

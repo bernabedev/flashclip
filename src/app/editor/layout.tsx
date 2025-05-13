@@ -51,7 +51,7 @@ export default function EditorLayout({
         <div>{children}</div>
       </main>
       <div className="min-h-14 border border-dashed border-slate-200/90">
-        <footer className="max-w-7xl mx-auto"></footer>
+        <footer className="max-w-6xl mx-auto"></footer>
       </div>
     </div>
   );

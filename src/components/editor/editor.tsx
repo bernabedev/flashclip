@@ -1,8 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import {
   type LayerState,
+  LayoutAspectRatios,
   type LayoutVariant,
-  LayoutVariantNames,
   type OutputOptions,
 } from "@/types/editor";
 import { useEffect, useRef, useState } from "react";
@@ -13,17 +13,6 @@ import Timeline from "./timeline";
 import VideoStage from "./video-stage";
 
 const initialLayers: Record<LayerState["id"], LayerState> = {
-  /**
-   * Initial state of the "content" layer.
-   *
-   * @property {number} x - X coordinate of the layer.
-   * @property {number} y - Y coordinate of the layer.
-   * @property {number} width - Width of the layer.
-   * @property {number} height - Height of the layer.
-   * @property {number} rotation - Rotation of the layer in degrees.
-   * @property {number} zIndex - Z-index of the layer.
-   * @property {boolean} visible - Whether the layer is visible or not.
-   */
   content: {
     id: "content",
     x: 0,
@@ -77,18 +66,6 @@ export default function Editor({ videoFile }: EditorProps) {
 
   const videoElementRef = useRef<HTMLVideoElement>(null);
 
-  // const handleVideoSelect = (file: File) => {
-  //   setVideoSrc(null);
-  //   setInputVideoDimensions(null);
-  //   setIsVideoMetadataLoaded(false);
-  //   setDuration(0);
-  //   setCurrentTime(0);
-  //   setIsPlaying(false);
-  //   setLayers(initialLayers);
-  //   setSelectedLayerId(null);
-  //   setOutputOptions(initialOutputOptions);
-  // };
-
   useEffect(() => {
     if (videoFile) {
       const url = URL.createObjectURL(videoFile);
@@ -102,6 +79,11 @@ export default function Editor({ videoFile }: EditorProps) {
       };
     } else {
       setVideoSrc(null);
+      setInputVideoDimensions(null);
+      setIsVideoMetadataLoaded(false);
+      setDuration(0);
+      setCurrentTime(0);
+      setIsPlaying(false);
     }
   }, [videoFile]);
 
@@ -130,16 +112,10 @@ export default function Editor({ videoFile }: EditorProps) {
 
         const contentWidth = videoWidth;
         const contentHeight = videoHeight;
-
-        // --- Robust Size Calculation ---
         const targetCameraWidth = Math.min(480, videoWidth * 0.25);
-        // Ensure minimum width of 1px
         const cameraWidth = Math.max(1, targetCameraWidth);
-        // Calculate height based on potentially clamped width
         const targetCameraHeight = (cameraWidth / 16) * 9;
-        // Ensure minimum height of 1px
         const cameraHeight = Math.max(1, targetCameraHeight);
-        // --- End Robust Size Calculation ---
 
         setLayers({
           content: {
@@ -154,31 +130,8 @@ export default function Editor({ videoFile }: EditorProps) {
           },
           camera: {
             id: "camera",
-            x: contentWidth - cameraWidth,
-            y: contentHeight - cameraHeight,
-            width: cameraWidth,
-            height: cameraHeight,
-            rotation: 0,
-            zIndex: 10,
-            visible: true,
-          },
-        });
-
-        console.log({
-          content: {
-            id: "content",
-            x: 0,
-            y: 0,
-            width: contentWidth,
-            height: contentHeight,
-            rotation: 0,
-            zIndex: 1,
-            visible: true,
-          },
-          camera: {
-            id: "camera",
-            x: contentWidth - cameraWidth,
-            y: contentHeight - cameraHeight,
+            x: contentWidth - cameraWidth - 10,
+            y: contentHeight - cameraHeight - 10,
             width: cameraWidth,
             height: cameraHeight,
             rotation: 0,
@@ -300,18 +253,14 @@ export default function Editor({ videoFile }: EditorProps) {
       });
       return;
     }
-
     setIsClipping(true);
     toast.info("Preparing clip instructions...", { id: "clip-process" });
-
-    // 1. Gather Visible Layers Data
     const visibleLayers = Object.values(layers)
       .filter((layer) => layer.visible && layer.width > 0 && layer.height > 0)
       .map((layer) => ({
         id: layer.id,
         sourceRect: {
-          // Structure for clarity in backend
-          x: Math.round(layer.x), // Send rounded integers
+          x: Math.round(layer.x),
           y: Math.round(layer.y),
           width: Math.round(layer.width),
           height: Math.round(layer.height),
@@ -319,7 +268,6 @@ export default function Editor({ videoFile }: EditorProps) {
         rotation: layer.rotation,
         zIndex: layer.zIndex,
       }));
-
     if (visibleLayers.length === 0) {
       toast.error("Cannot create clip", {
         id: "clip-process",
@@ -329,17 +277,10 @@ export default function Editor({ videoFile }: EditorProps) {
       setIsClipping(false);
       return;
     }
-
-    // 2. Construct the Instructions Payload
     const clipInstructions = {
-      // --- Source Video Information ---
       source: {
-        // How the backend identifies the video.
-        // 'file_reference' assumes the backend has access based on the identifier.
-        // Could also be 'url' for Twitch/external links, or require upload.
         type: "file_reference",
-        identifier: videoFile.name, // Using filename as a simple identifier
-        // Optional: Original dimensions might be useful for backend validation
+        identifier: videoFile.name,
         originalDimensions: inputVideoDimensions
           ? {
               width: inputVideoDimensions.width,
@@ -347,46 +288,28 @@ export default function Editor({ videoFile }: EditorProps) {
             }
           : null,
       },
-
-      // --- Clip Details ---
       clip: {
-        startTime: 0, // TODO: Add UI for selecting start/end times later
+        startTime: 0,
         endTime: duration,
-        outputLayout: outputLayout, // e.g., "tiktok-cam-top"
+        outputLayout: outputLayout,
       },
-
-      // --- Layer Configuration ---
-      layers: visibleLayers, // Array of visible layer objects
-
-      // --- Output Options ---
+      layers: visibleLayers,
       options: {
         addBlurredBackground: outputOptions.addBlurredBackground,
-        // Add other options here in the future (e.g., audio adjustments, filters)
       },
-
-      // --- Optional Output Metadata ---
       outputMetadata: {
-        // Suggestion for the output filename
         filename_suggestion: `clip_${outputLayout}_${videoFile.name.replace(
           /\.[^/.]+$/,
           ""
         )}.mp4`,
       },
     };
-
-    // 3. Simulate Sending to Backend
-
     console.log({
       clipInstructions: JSON.stringify(clipInstructions, null, 2),
-    }); // Pretty print JSON
-
-    // --- Replace this block with actual fetch/axios call ---
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate network delay
-    const success = true; // Simulate backend response
-    // --- End of simulation block ---
-
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const success = true;
     if (success) {
-      // Replace with check of actual backend response
       toast.success("Clip Instructions Sent (Simulated)", {
         id: "clip-process",
         description: "Check console for the JSON payload.",
@@ -397,21 +320,39 @@ export default function Editor({ videoFile }: EditorProps) {
         description: "See console/network tab for details.",
       });
     }
-
-    setIsClipping(false); // Re-enable button
+    setIsClipping(false);
   };
 
   const isAppDisabled = !isVideoMetadataLoaded;
 
+  const inputContainerAspectRatio =
+    inputVideoDimensions &&
+    inputVideoDimensions.width > 0 &&
+    inputVideoDimensions.height > 0
+      ? `${inputVideoDimensions.width} / ${inputVideoDimensions.height}`
+      : "16 / 9";
+
+  const outputContainerAspectRatioValue = LayoutAspectRatios[outputLayout];
+  const outputContainerAspectRatioString =
+    typeof outputContainerAspectRatioValue === "number"
+      ? outputContainerAspectRatioValue.toString()
+      : "9 / 16";
+
   return (
     <div className="flex flex-col h-[calc(100vh-10rem)]">
       <Toaster position="top-right" richColors closeButton />
-      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden">
-        <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
-          <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
-            INPUT STAGE
+      <div className="flex-grow flex flex-col md:flex-row gap-4 overflow-hidden">
+        <div className="flex flex-col md:flex-[2_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
+          <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
+            INPUT
           </h2>
-          <div className="flex-grow flex items-center justify-center relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
+          <div
+            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
+            style={{
+              aspectRatio: inputContainerAspectRatio,
+              maxHeight: "400px",
+            }}
+          >
             <VideoStage
               videoSrc={videoSrc}
               layers={layers}
@@ -429,11 +370,18 @@ export default function Editor({ videoFile }: EditorProps) {
             />
           </div>
         </div>
-        <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden max-h-[calc(100vh-32rem)]">
-          <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
-            OUTPUT PREVIEW ({LayoutVariantNames[outputLayout]})
+
+        <div className="flex flex-col md:flex-[1_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
+          <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
+            OUTPUT PREVIEW
           </h2>
-          <div className="flex-grow relative bg-black/10 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden">
+          <div
+            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
+            style={{
+              aspectRatio: outputContainerAspectRatioString,
+              maxHeight: "624px",
+            }}
+          >
             <OutputPreview
               layout={outputLayout}
               outputOptions={outputOptions}
@@ -447,6 +395,7 @@ export default function Editor({ videoFile }: EditorProps) {
           </div>
         </div>
       </div>
+
       <div className="flex-shrink-0 mt-2">
         <Timeline
           currentTime={currentTime}
@@ -469,6 +418,7 @@ export default function Editor({ videoFile }: EditorProps) {
           onLayerSelect={handleLayerSelect}
           disabled={isAppDisabled}
           onClipCreate={handleCreateClip}
+          isClipping={isClipping}
         />
       </div>
     </div>

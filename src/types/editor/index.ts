@@ -36,6 +36,20 @@ export const LayoutAspectRatios: Record<LayoutVariant, number> = {
   "other-9:16": 9 / 16,
 };
 
+export const LayoutAspectRatiosString: Record<LayoutVariant, string> = {
+  "tiktok-content-only": "9 / 16",
+  "tiktok-cam-top": "9 / 16",
+  "tiktok-cam-bottom": "9 / 16",
+  "youtube-content-only": "16 / 9",
+  "youtube-pip-tl": "16 / 9",
+  "youtube-pip-tr": "16 / 9",
+  "youtube-pip-bl": "16 / 9",
+  "youtube-pip-br": "16 / 9",
+  "square-content-only": "1 / 1",
+  "other-16:9": "16 / 9",
+  "other-9:16": "9 / 16",
+} as const;
+
 export const LayoutVariantNames: Record<LayoutVariant, string> = {
   "tiktok-content-only": "TikTok (Content Only)",
   "tiktok-cam-top": "TikTok (Camera Top)",
