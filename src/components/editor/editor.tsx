@@ -381,12 +381,8 @@ export default function Editor({ videoFile }: EditorProps) {
   const isAppDisabled = !isVideoMetadataLoaded;
 
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground">
+    <div className="flex flex-col h-screen">
       <Toaster position="top-right" richColors closeButton />
-      <header className="p-4 border-b sticky top-0 bg-background/95 backdrop-blur z-10 flex-shrink-0">
-        {" "}
-        <h1 className="text-2xl font-bold">Video Clipper</h1>{" "}
-      </header>
       <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
         <div className="flex flex-col min-h-[250px] sm:min-h-[300px] overflow-hidden">
           <h2 className="text-sm sm:text-base font-semibold mb-2 text-center text-muted-foreground flex-shrink-0">
@@ -429,7 +425,6 @@ export default function Editor({ videoFile }: EditorProps) {
         </div>
       </div>
       <div className="flex-shrink-0 mt-2">
-        {" "}
         <Timeline
           currentTime={currentTime}
           duration={duration}
@@ -437,7 +432,7 @@ export default function Editor({ videoFile }: EditorProps) {
           onSeek={handleSeek}
           onPlayPause={handlePlayPause}
           disabled={isAppDisabled || duration <= 0}
-        />{" "}
+        />
       </div>
       <div className="order-2 h-full overflow-hidden fixed right-4 z-50 max-w-[22rem]">
         <SettingsPanel

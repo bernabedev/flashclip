@@ -19,6 +19,13 @@ import {
   LayoutVariantNames,
   type OutputOptions,
 } from "@/types/editor";
+import {
+  Layers,
+  LayoutGrid,
+  ListFilter,
+  Scissors,
+  SettingsIcon,
+} from "lucide-react"; // Added icons
 import React from "react";
 import LayerControl from "./layer-control";
 
@@ -30,9 +37,10 @@ interface SettingsPanelProps {
   layers: Record<LayerState["id"], LayerState>;
   selectedLayerId: LayerState["id"] | null;
   onLayerUpdate: (id: LayerState["id"], newProps: Partial<LayerState>) => void;
-  onLayerSelect: (id: LayerState["id"]) => void;
+  onLayerSelect: (id: LayerState["id"] | null) => void; // Allow null for deselection
   disabled?: boolean;
   onClipCreate?: () => void;
+  isClipping?: boolean; // Added for button state
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -46,23 +54,36 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onLayerSelect,
   disabled,
   onClipCreate,
+  isClipping,
 }) => {
   const handleBlurBgChange = (checked: boolean) => {
     onOutputOptionsChange({ addBlurredBackground: checked });
   };
 
   return (
-    <Card className={`h-full overflow-y-auto border-none`}>
-      <CardHeader>
-        <CardTitle>Settings & Layers</CardTitle>
+    <Card className="h-full overflow-y-auto border-l shadow-lg bg-card">
+      {/* Subtle background, shadow */}
+      <CardHeader className="sticky top-0 bg-card/80 backdrop-blur-sm z-10 border-b px-4 !pb-2">
+        {/* Sticky header */}
+        <CardTitle className="flex items-center text-xl">
+          <SettingsIcon className="mr-2 h-6 w-6 text-primary" />
+          Settings & Layers
+        </CardTitle>
       </CardHeader>
       <CardContent
-        className={`space-y-6 ${
+        className={`p-4 space-y-6 ${
+          // Consistent padding
           disabled ? "pointer-events-none opacity-60" : ""
         }`}
       >
         <div>
-          <Label htmlFor="output-layout">Output Layout</Label>
+          <Label
+            htmlFor="output-layout"
+            className="text-sm font-medium flex items-center mb-1.5"
+          >
+            <LayoutGrid className="mr-2 h-4 w-4 text-muted-foreground" />
+            Output Layout
+          </Label>
           <Select
             value={outputLayout}
             onValueChange={(value) => onLayoutChange(value as LayoutVariant)}
@@ -89,11 +110,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         <Separator />
 
         <div>
-          <h3 className="text-lg font-semibold mb-3">Output Options</h3>
-          <div className="flex items-center justify-between space-x-2 p-2 rounded-md border">
-            <Label htmlFor="blur-bg" className="cursor-pointer">
-              Blurred Background
-            </Label>
+          <h3 className="text-sm font-medium flex items-center mb-2">
+            <ListFilter className="mr-2 h-4 w-4 text-muted-foreground" />
+            Output Options
+          </h3>
+          <div className="flex items-center justify-between space-x-2 p-3 rounded-md border bg-background/50">
+            <div>
+              <Label htmlFor="blur-bg" className="cursor-pointer flex-grow">
+                Blurred Background
+              </Label>
+              <p className="text-[10px] text-muted-foreground">
+                Adds a blurred version of the main content as background.
+              </p>
+            </div>
             <Switch
               id="blur-bg"
               checked={outputOptions.addBlurredBackground}
@@ -101,15 +130,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               disabled={disabled}
             />
           </div>
+          {/* Add more output options here in the future */}
         </div>
 
         <Separator />
 
         <div>
-          <h3 className="text-lg font-semibold mb-3">Input Layers</h3>
+          <h3 className="text-sm font-medium flex items-center mb-2">
+            <Layers className="mr-2 h-4 w-4 text-muted-foreground" />
+            Input Layers
+          </h3>
           {Object.keys(layers).length > 0 ? (
             Object.values(layers)
-              .sort((a, b) => a.id.localeCompare(b.id))
+              .sort((a, b) => a.zIndex - b.zIndex) // Sort by zIndex for intuitive order
               .map((layer) => (
                 <LayerControl
                   key={layer.id}
@@ -121,20 +154,30 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 />
               ))
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Load a video to see layers.
+            <p className="text-sm text-muted-foreground py-4 text-center">
+              Load a video to see and manage layers.
             </p>
           )}
         </div>
         <Separator />
         <div>
-          <h3 className="text-lg font-semibold mb-3">Actions</h3>
+          <h3 className="text-sm font-medium flex items-center mb-2">
+            <Scissors className="mr-2 h-4 w-4 text-muted-foreground" />
+            Actions
+          </h3>
           <Button
-            className="w-full"
-            disabled={disabled || !Object.values(layers).some((l) => l.visible)}
+            className="w-full text-base py-3" // Slightly larger
+            size="lg"
+            disabled={
+              disabled ||
+              !Object.values(layers).some((l) => l.visible) ||
+              isClipping
+            }
             onClick={onClipCreate}
+            variant="default" // Make it primary
           >
-            Create Clip
+            {isClipping ? "Processing..." : "Create Clip"}
+            {!isClipping && <Scissors className="ml-2 h-5 w-5" />}
           </Button>
         </div>
       </CardContent>
