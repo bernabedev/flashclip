@@ -1,4 +1,4 @@
-import { capitalize } from "@/lib/utils";
+import { capitalize, cn } from "@/lib/utils";
 import { type LayerState } from "@/types/editor";
 import React, { useCallback, useEffect, useRef, useState } from "react"; // Import useCallback, useState
 import {
@@ -94,7 +94,7 @@ const VideoStage: React.FC<VideoStageProps> = ({
     };
     setStageLayout(layout);
     return layout;
-  }, [inputVideoDimensions, videoElementRef, stageRef]); // Dependencies
+  }, [inputVideoDimensions, videoElementRef, stageRef]);
 
   // --- Update layout on mount and resize ---
   useEffect(() => {
@@ -261,6 +261,15 @@ const VideoStage: React.FC<VideoStageProps> = ({
     const layerColor =
       layer.id === "content" ? "rgba(0, 255, 0," : "rgba(255, 0, 255,";
 
+    const handleSize = 8;
+
+    const resizeHandleStyle = {
+      width: `${handleSize}px`,
+      height: `${handleSize}px`,
+      border: "1px solid #ff027f",
+      backgroundColor: isSelected ? "#ff027fb0" : `${layerColor} 0.7)`,
+    };
+
     return {
       size: { width: stageWidth, height: stageHeight },
       position: { x: stageX, y: stageY },
@@ -268,9 +277,11 @@ const VideoStage: React.FC<VideoStageProps> = ({
         // Directly apply styles needed for Rnd visibility and interaction
         transform: `rotate(${layer.rotation}deg)`,
         backgroundColor: `${layerColor} 0.1)`,
-        outline: isSelected ? `2px solid blue` : `2px solid ${layerColor} 0.6)`, // More prominent selection outline
+        outline: isSelected
+          ? `2px solid #ff027f`
+          : `2px solid ${layerColor} 0.6)`, // More prominent selection outline
         outlineOffset: isSelected ? "0px" : "-1px",
-        border: isSelected ? `2px solid blue` : `2px dashed transparent`, // Clearer selection border
+        border: isSelected ? `2px solid #ff027f` : `2px dashed transparent`, // Clearer selection border
         zIndex: isSelected ? 50 : layer.zIndex, // Ensure selected is on top
         cursor: "move", // Explicitly set cursor
         boxShadow: isSelected ? "0 0 10px rgba(59, 130, 246, 0.5)" : "none", // Add glow on select
@@ -279,6 +290,14 @@ const VideoStage: React.FC<VideoStageProps> = ({
         opacity: isSelected ? 1 : 0.8,
       },
       className: `absolute group hover:border-gray-400 hover:opacity-100`, // Base classes
+      resizeHandleStyles: isSelected
+        ? {
+            topLeft: { ...resizeHandleStyle },
+            topRight: { ...resizeHandleStyle },
+            bottomLeft: { ...resizeHandleStyle },
+            bottomRight: { ...resizeHandleStyle },
+          }
+        : {},
     };
   };
 
@@ -343,6 +362,7 @@ const VideoStage: React.FC<VideoStageProps> = ({
                     handleLayerClick(e, layer.id) // Use specific click handler
                 }
                 bounds="parent" // Keep bounds to parent stage
+                lockAspectRatio={true}
                 // minWidth/minHeight can be set based on layout scale if needed
                 // minWidth={10 / layout.scale}
                 // minHeight={10 / layout.scale}
@@ -356,7 +376,11 @@ const VideoStage: React.FC<VideoStageProps> = ({
                   }`}
                   style={{ zIndex: 51 }} // Ensure label is above the box outline/border
                 >
-                  <span className="bg-black/70 text-white text-xs px-1.5 py-0.5 rounded shadow">
+                  <span
+                    className={cn(
+                      "text-white text-xs px-1.5 py-0.5 rounded bg-primary"
+                    )}
+                  >
                     {capitalize(layer.id)}
                   </span>
                 </div>
