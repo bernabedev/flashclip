@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     template: "%s | Flashclip",
     default: "Flashclip - The best way to create clips",
   },
-  description: "Flashclip - The best way to create clips",
+  description:
+    "A simple way to create clips, for free! No ads, no tracking, no limits.",
 };
 
 export default function RootLayout({
