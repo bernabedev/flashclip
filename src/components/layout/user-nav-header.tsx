@@ -1,12 +1,16 @@
+"use client";
+import { cn } from "@/lib/utils";
 import { SignedIn, UserButton } from "@clerk/nextjs";
+import { LayoutDashboard } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { buttonVariants } from "../ui/button";
 
 export default function UserNavHeader() {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith("/dashboard");
   return (
     <div className="flex items-center gap-4">
-      {/* <Button className="min-w-28">
-        <ShareIcon className="size-4" />
-        Export
-      </Button> */}
       <SignedIn>
         <UserButton
           fallback={
@@ -18,6 +22,15 @@ export default function UserNavHeader() {
             },
           }}
         />
+        {!isDashboard && (
+          <Link
+            href="/dashboard"
+            className={cn(buttonVariants({ variant: "default" }), "min-w-28")}
+          >
+            <LayoutDashboard className="size-4" />
+            Dashboard
+          </Link>
+        )}
       </SignedIn>
     </div>
   );
