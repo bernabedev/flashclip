@@ -1,10 +1,10 @@
-import { Toaster } from "@/components/ui/sonner";
 import {
   type LayerState,
   LayoutAspectRatios,
   type LayoutVariant,
   type OutputOptions,
 } from "@/types/editor";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import ClipLoadingScreen from "../clip-loading-screen";
@@ -66,6 +66,7 @@ export default function Editor({ videoFile }: EditorProps) {
     useState<boolean>(false);
 
   const videoElementRef = useRef<HTMLVideoElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (videoFile) {
@@ -255,7 +256,6 @@ export default function Editor({ videoFile }: EditorProps) {
       return;
     }
     setIsClipping(true);
-    toast.info("Preparing clip instructions...", { id: "clip-process" });
     const visibleLayers = Object.values(layers)
       .filter((layer) => layer.visible && layer.width > 0 && layer.height > 0)
       .map((layer) => ({
@@ -305,9 +305,6 @@ export default function Editor({ videoFile }: EditorProps) {
         )}.mp4`,
       },
     };
-    console.log({
-      clipInstructions: JSON.stringify(clipInstructions, null, 2),
-    });
     const formData = new FormData();
     formData.append("video", videoFile);
     formData.append("instructions", JSON.stringify(clipInstructions));
@@ -324,6 +321,7 @@ export default function Editor({ videoFile }: EditorProps) {
         id: "clip-process",
         description: data.message,
       });
+      router.push(`/clip/${Date.now()}?url=${data.url}`);
     } catch (error) {
       console.error("Error processing clip:", error);
       toast.error("Failed to process clip", {
@@ -354,7 +352,6 @@ export default function Editor({ videoFile }: EditorProps) {
     <>
       {isClipping && <ClipLoadingScreen />}
       <div className="flex flex-col h-[calc(100vh-10rem)]">
-        <Toaster position="top-right" richColors closeButton />
         <div className="flex-grow flex flex-col md:flex-row gap-4 overflow-hidden">
           <div className="flex flex-col md:flex-[2_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
             <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">

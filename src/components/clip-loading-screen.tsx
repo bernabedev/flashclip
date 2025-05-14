@@ -100,7 +100,7 @@ export default function ClipLoadingScreen({
           }, 1000);
         }
       }
-    }, 60000);
+    }, 20000); // 20 seconds
 
     return () => clearTimeout(timer);
   }, [currentStep, steps, isLoading, onComplete]);
