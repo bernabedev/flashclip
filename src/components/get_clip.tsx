@@ -16,7 +16,8 @@ export default function GetClip() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const downloadClip = async () => {
+  const downloadClip = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!clipUrl.trim()) {
       setError("Please enter a Twitch Clip URL.");
       return;
@@ -88,7 +89,7 @@ export default function GetClip() {
 
   useEffect(() => {
     if (downloadedVideoFile) {
-      const clipId = clipUrl.split("/").pop() || window.crypto.randomUUID();
+      const clipId = window.crypto.randomUUID();
       saveVideoToDB(clipId, downloadedVideoFile);
       router.push(`/editor/${clipId}`);
     }
@@ -106,7 +107,7 @@ export default function GetClip() {
       />
       <hr className="my-8" />
       <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
+        <form className="flex gap-2" onSubmit={downloadClip}>
           <Input
             placeholder="Enter Twitch Clip URL"
             className="bg-white w-96"
@@ -119,27 +120,13 @@ export default function GetClip() {
           />
           <Button
             className="min-w-32"
-            onClick={downloadClip}
+            type="submit"
             disabled={!clipUrl.trim() || loading}
           >
             {loading ? "Generating..." : "Generate"}
           </Button>
-        </div>
+        </form>
         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-        {downloadedVideoFile && !error && (
-          <p className="text-green-600 text-sm mt-1">
-            Clip processed: {downloadedVideoFile.name}
-          </p>
-        )}
-        {downloadedVideoFile && !error && (
-          <div>
-            <video
-              controls
-              src={URL.createObjectURL(downloadedVideoFile)}
-              className="w-full"
-            />
-          </div>
-        )}
       </div>
     </>
   );
