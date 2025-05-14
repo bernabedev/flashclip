@@ -3,14 +3,12 @@ import { ApiError, getOrCreateDbUserFromClerk } from "@/lib/server-utils";
 import { NextResponse } from "next/server";
 
 interface RouteParams {
-  params: {
-    clipId: string;
-  };
+  params: Promise<{ clipId: string }>;
 }
 
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    const { clipId } = params;
+    const { clipId } = await params;
     if (!clipId) {
       throw new ApiError("Clip ID is required.", 400);
     }
