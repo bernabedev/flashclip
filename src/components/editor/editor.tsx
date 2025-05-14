@@ -1,9 +1,13 @@
+import { api } from "@/services/api";
+import { ClipDataToSave } from "@/types/clip";
 import {
   type LayerState,
   LayoutAspectRatios,
+  LayoutAspectRatiosString,
   type LayoutVariant,
   type OutputOptions,
 } from "@/types/editor";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -248,6 +252,8 @@ export default function Editor({ videoFile }: EditorProps) {
   }, [videoSrc, isPlaying]);
 
   const [isClipping, setIsClipping] = useState<boolean>(false);
+
+  const { user, isSignedIn } = useUser();
   const handleCreateClip = async () => {
     if (!videoFile || !isVideoMetadataLoaded || duration <= 0 || isClipping) {
       toast.warning("Cannot create clip", {
@@ -317,10 +323,63 @@ export default function Editor({ videoFile }: EditorProps) {
       if (!res.ok) {
         throw new Error(data.error);
       }
+
       toast.success("Clip processed successfully", {
         id: "clip-process",
         description: data.message,
       });
+
+      if (isSignedIn && user && data.url) {
+        toast.info("Saving clip to your account...", {
+          id: "db-save-process",
+        });
+
+        const clipDataToSave: ClipDataToSave = {
+          title:
+            data.title ||
+            clipInstructions.outputMetadata.filename_suggestion ||
+            `Clip from ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
+          url: data.url,
+          thumbnailUrl: data.thumbnail_url,
+          authorName: user.username || user.firstName || videoFile.name,
+          duration: Math.round(duration * 1000),
+
+          width: outputLayout
+            ? LayoutAspectRatios[outputLayout]
+              ? typeof LayoutAspectRatios[outputLayout] === "number"
+                ? LayoutAspectRatios[outputLayout] * (data.output_height || 720)
+                : parseInt(
+                    LayoutAspectRatiosString[outputLayout].split("/")[0]
+                  ) * 100
+              : inputVideoDimensions?.width || 1280
+            : inputVideoDimensions?.width || 1280,
+          height: outputLayout
+            ? LayoutAspectRatios[outputLayout]
+              ? typeof LayoutAspectRatios[outputLayout] === "number"
+                ? data.output_height || 720
+                : parseInt(
+                    LayoutAspectRatiosString[outputLayout].split("/")[1]
+                  ) * 100
+              : inputVideoDimensions?.height || 720
+            : inputVideoDimensions?.height || 720,
+        };
+
+        try {
+          await api.clip.save(clipDataToSave); // USA TU SERVICIO AQUÍ
+          toast.success("Clip saved to your account!", {
+            id: "db-save-process",
+            description: `You can find it in your dashboard.`,
+          });
+        } catch (e: unknown) {
+          console.error("Error saving clip to DB:", e);
+          toast.error("Failed to save clip to your account", {
+            id: "db-save-process",
+            description:
+              "The clip was processed, but not saved. Please try saving it later if needed.",
+          });
+        }
+      }
+
       router.push(`/clip/${Date.now()}?url=${data.url}`);
     } catch (error) {
       console.error("Error processing clip:", error);
