@@ -53,10 +53,51 @@ export default function ClipReady({ clipUrl }: { clipUrl: string }) {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     toast("Descarga iniciada", {
       description: "Tu clip se está descargando",
     });
+    try {
+      const response = await fetch(clipUrl);
+
+      if (!response.ok) {
+        let errorMessage = `Error al obtener el archivo: ${response.statusText} (código: ${response.status})`;
+        if (
+          response.status === 0 ||
+          response.type === "opaque" ||
+          response.status === 403 ||
+          response.status === 401
+        ) {
+          errorMessage +=
+            ". Verifica la configuración CORS en el bucket de Backblaze B2 y que la URL prefirmada sea válida.";
+        }
+        throw new Error(errorMessage);
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `clip-${clipTitle}.mp4`;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast("Descarga completada", {
+        description: "Tu clip se ha descargado.",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error en la descarga:", error);
+        toast("Error en la descarga", {
+          description: `No se pudo descargar el clip. ${error.message}`,
+        });
+      }
+    }
   };
 
   const handleCopyLink = () => {
