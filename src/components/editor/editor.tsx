@@ -7,6 +7,7 @@ import {
 } from "@/types/editor";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import ClipLoadingScreen from "../clip-loading-screen";
 import OutputPreview from "./output-preview";
 import SettingsPanel from "./settings-panel";
 import Timeline from "./timeline";
@@ -120,9 +121,9 @@ export default function Editor({ videoFile }: EditorProps) {
         setLayers({
           content: {
             id: "content",
-            x: 0,
-            y: 0,
-            width: contentWidth,
+            x: (contentWidth - contentWidth / 2) / 2,
+            y: contentHeight - contentHeight,
+            width: contentWidth / 2,
             height: contentHeight,
             rotation: 0,
             zIndex: 1,
@@ -350,88 +351,91 @@ export default function Editor({ videoFile }: EditorProps) {
       : "9 / 16";
 
   return (
-    <div className="flex flex-col h-[calc(100vh-10rem)]">
-      <Toaster position="top-right" richColors closeButton />
-      <div className="flex-grow flex flex-col md:flex-row gap-4 overflow-hidden">
-        <div className="flex flex-col md:flex-[2_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
-          <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
-            INPUT
-          </h2>
-          <div
-            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner "
-            style={{
-              aspectRatio: inputContainerAspectRatio,
-              maxHeight: "400px",
-            }}
-          >
-            <VideoStage
-              videoSrc={videoSrc}
-              layers={layers}
-              selectedLayerId={selectedLayerId}
-              currentTime={currentTime}
-              videoElementRef={
-                videoElementRef as React.RefObject<HTMLVideoElement>
-              }
-              inputVideoDimensions={inputVideoDimensions}
-              onLayerUpdate={handleLayerUpdate}
-              onLayerSelect={handleLayerSelect}
-              onTimeUpdate={handleTimeUpdate}
-              onDurationChange={handleDurationChange}
-              onLoadedMetadata={handleLoadedMetadata}
-            />
+    <>
+      {isClipping && <ClipLoadingScreen />}
+      <div className="flex flex-col h-[calc(100vh-10rem)]">
+        <Toaster position="top-right" richColors closeButton />
+        <div className="flex-grow flex flex-col md:flex-row gap-4 overflow-hidden">
+          <div className="flex flex-col md:flex-[2_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
+            <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
+              INPUT
+            </h2>
+            <div
+              className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner "
+              style={{
+                aspectRatio: inputContainerAspectRatio,
+                maxHeight: "400px",
+              }}
+            >
+              <VideoStage
+                videoSrc={videoSrc}
+                layers={layers}
+                selectedLayerId={selectedLayerId}
+                currentTime={currentTime}
+                videoElementRef={
+                  videoElementRef as React.RefObject<HTMLVideoElement>
+                }
+                inputVideoDimensions={inputVideoDimensions}
+                onLayerUpdate={handleLayerUpdate}
+                onLayerSelect={handleLayerSelect}
+                onTimeUpdate={handleTimeUpdate}
+                onDurationChange={handleDurationChange}
+                onLoadedMetadata={handleLoadedMetadata}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-[1_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
+            <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
+              OUTPUT PREVIEW
+            </h2>
+            <div
+              className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
+              style={{
+                aspectRatio: outputContainerAspectRatioString,
+                maxHeight: "624px",
+              }}
+            >
+              <OutputPreview
+                layout={outputLayout}
+                outputOptions={outputOptions}
+                sourceVideoElement={videoElementRef.current}
+                isPlaying={isPlaying}
+                currentTime={currentTime}
+                layers={layers}
+                inputVideoDimensions={inputVideoDimensions}
+                isVideoReady={isVideoMetadataLoaded}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-[1_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
-          <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
-            OUTPUT PREVIEW
-          </h2>
-          <div
-            className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
-            style={{
-              aspectRatio: outputContainerAspectRatioString,
-              maxHeight: "624px",
-            }}
-          >
-            <OutputPreview
-              layout={outputLayout}
-              outputOptions={outputOptions}
-              sourceVideoElement={videoElementRef.current}
-              isPlaying={isPlaying}
-              currentTime={currentTime}
-              layers={layers}
-              inputVideoDimensions={inputVideoDimensions}
-              isVideoReady={isVideoMetadataLoaded}
-            />
-          </div>
+        <div className="flex-shrink-0 mt-2">
+          <Timeline
+            currentTime={currentTime}
+            duration={duration}
+            isPlaying={isPlaying}
+            onSeek={handleSeek}
+            onPlayPause={handlePlayPause}
+            disabled={isAppDisabled || duration <= 0}
+          />
+        </div>
+        <div className="order-2 h-full overflow-hidden fixed right-4 z-50 max-w-[22rem]">
+          <SettingsPanel
+            outputLayout={outputLayout}
+            outputOptions={outputOptions}
+            onLayoutChange={setOutputLayout}
+            onOutputOptionsChange={handleOutputOptionsChange}
+            layers={layers}
+            selectedLayerId={selectedLayerId}
+            onLayerUpdate={handleLayerUpdate}
+            onLayerSelect={handleLayerSelect}
+            disabled={isAppDisabled}
+            onClipCreate={handleCreateClip}
+            isClipping={isClipping}
+          />
         </div>
       </div>
-
-      <div className="flex-shrink-0 mt-2">
-        <Timeline
-          currentTime={currentTime}
-          duration={duration}
-          isPlaying={isPlaying}
-          onSeek={handleSeek}
-          onPlayPause={handlePlayPause}
-          disabled={isAppDisabled || duration <= 0}
-        />
-      </div>
-      <div className="order-2 h-full overflow-hidden fixed right-4 z-50 max-w-[22rem]">
-        <SettingsPanel
-          outputLayout={outputLayout}
-          outputOptions={outputOptions}
-          onLayoutChange={setOutputLayout}
-          onOutputOptionsChange={handleOutputOptionsChange}
-          layers={layers}
-          selectedLayerId={selectedLayerId}
-          onLayerUpdate={handleLayerUpdate}
-          onLayerSelect={handleLayerSelect}
-          disabled={isAppDisabled}
-          onClipCreate={handleCreateClip}
-          isClipping={isClipping}
-        />
-      </div>
-    </div>
+    </>
   );
 }
