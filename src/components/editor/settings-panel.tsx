@@ -61,7 +61,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <Card className="h-full max-h-[calc(100vh-10rem)] overflow-y-auto border-l pt-0">
+    <Card className="h-full max-h-[calc(100vh-10rem)] overflow-y-auto border-l pt-0 pb-0">
       {/* Subtle background, shadow */}
       <CardHeader className="sticky top-0 bg-card/80 backdrop-blur-sm z-10 border-b px-4 pt-4 !pb-2">
         {/* Sticky header */}
@@ -71,7 +71,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent
-        className={`p-4 space-y-6 ${
+        className={`p-4 space-y-6 pb-0 ${
           // Consistent padding
           disabled ? "pointer-events-none opacity-60" : ""
         }`}
@@ -159,8 +159,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </p>
           )}
         </div>
-        <Separator />
-        <div>
+        <Separator className="mb-0" />
+        <div className="sticky bottom-0 bg-white/90 py-8 backdrop-blur-sm z-10 outline-white outline-4">
           <h3 className="text-sm font-medium flex items-center mb-2">
             <Scissors className="mr-2 h-4 w-4 text-muted-foreground" />
             Actions
