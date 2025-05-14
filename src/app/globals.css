@@ -43,6 +43,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   --color-primary: #FF007F;
+  --color-secondary: #FFA500;
 }
 
 :root {

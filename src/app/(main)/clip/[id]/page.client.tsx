@@ -193,7 +193,7 @@ export default function ClipReady({ clipUrl }: { clipUrl: string }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Button
             onClick={handleDownload}
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 h-14 text-lg rounded-xl border-0 shadow-lg shadow-pink-500/20 transition-all duration-300 hover:shadow-pink-500/30 hover:translate-y-[-2px]"
+            className="bg-gradient-to-r from-primary/90 to-secondary/90 hover:from-primary hover:to-secondary h-14 text-lg rounded-xl border-0 shadow-lg shadow-pink-500/20 transition-all duration-300 hover:shadow-pink-500/30 hover:translate-y-[-2px]"
           >
             <Download className="mr-2 h-5 w-5" /> Descargar Clip
           </Button>
@@ -209,9 +209,9 @@ export default function ClipReady({ clipUrl }: { clipUrl: string }) {
 
         {/* Share section */}
         <Card className="backdrop-blur-md bg-white/50 dark:bg-gray-800/50 rounded-xl p-8">
-          <h2 className="text-lg font-medium mb-6 flex items-center">
-            <Share2 className="mr-2 h-5 w-5 text-pink-500" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
+          <h2 className="text-lg font-medium flex items-center">
+            <Share2 className="mr-2 h-5 w-5 text-primary" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
               Compartir en redes sociales
             </span>
           </h2>
