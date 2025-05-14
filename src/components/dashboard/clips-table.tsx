@@ -142,11 +142,11 @@ export function ClipsTable() {
     );
   };
 
-  const toggleAll = () => {
-    setSelectedClips((prev) =>
-      prev.length === clips.length ? [] : clips.map((clip) => clip.id)
-    );
-  };
+  // const toggleAll = () => {
+  //   setSelectedClips((prev) =>
+  //     prev.length === clips.length ? [] : clips.map((clip) => clip.id)
+  //   );
+  // };
 
   return (
     <div className="space-y-4">
