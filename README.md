@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✂️ Flashclip
 
-## Getting Started
+Effortlessly create perfectly formatted video clips for social media. Powered by Next.js, React, and Tailwind CSS.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Dynamic Layouts**: Instantly switch between output formats (e.g., TikTok, YouTube Shorts, Square).
+- **Layer-Based Editing**: Precisely position, resize, and rotate 'content' and 'camera' layers on an intuitive input stage.
+- **Aspect Ratio Integrity**: Input and output previews dynamically adjust to respect source video and target layout aspect ratios.
+- **Real-time Output Preview**: See exactly how your final clip will look as you make changes.
+- **Visual Enhancements**: Optional blurred background for a polished, professional touch.
+- **Modern Stack**: Built with the latest web technologies for a smooth experience.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Tech Stack
 
-## Learn More
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **UI**: React
+- **Styling**: Tailwind CSS
+- **Components**: Shadcn/ui
+- **Icons**: Lucide React
+- **Interactivity**: `react-rnd` for draggable/resizable layers
+- **Notifications**: `sonner`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js (>= 18.x recommended)
+- npm, yarn, or pnpm
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation & Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/your-username/clipcraft.git
+    cd clipcraft
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
+
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🎮 How to Use
+
+1.  **Upload Video**: Click to select or drag & drop your source video file.
+2.  **Adjust Input Layers**:
+    - On the "INPUT STAGE", select either the `Content` or `Camera` layer.
+    - Drag to move, resize by dragging the handles, or use the controls in the "Settings & Layers" panel.
+3.  **Configure Output**:
+    - In the "Settings & Layers" panel, choose your desired "Output Layout".
+    - Toggle options like "Blurred Background".
+4.  **Preview**: The "OUTPUT PREVIEW" will update in real-time.
+5.  **Create Clip**: Click "Create Clip" to generate (simulated) processing instructions. Check your browser's console for the JSON payload.
+
+---
+
+## 📄 License
+
+Licensed under the MIT License. See `LICENSE` file for details.
