@@ -15,6 +15,8 @@ export async function getOrCreateDbUserFromClerk(): Promise<PrismaUser> {
   const { userId: clerkAuthUserId } = await auth();
   const client = await clerkClient();
 
+  console.log("clerkAuthUserId", clerkAuthUserId);
+
   if (!clerkAuthUserId) {
     throw new ApiError("User not authenticated.", 401);
   }

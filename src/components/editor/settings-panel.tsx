@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
@@ -13,6 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import {
+  ClipCreateValues,
   type LayerState,
   LayoutGroups,
   type LayoutVariant,
@@ -27,6 +27,7 @@ import {
   SettingsIcon,
 } from "lucide-react"; // Added icons
 import React from "react";
+import { GenerateClipModal } from "./generate-clip-modal";
 import LayerControl from "./layer-control";
 
 interface SettingsPanelProps {
@@ -39,7 +40,7 @@ interface SettingsPanelProps {
   onLayerUpdate: (id: LayerState["id"], newProps: Partial<LayerState>) => void;
   onLayerSelect: (id: LayerState["id"] | null) => void; // Allow null for deselection
   disabled?: boolean;
-  onClipCreate?: () => void;
+  onClipCreate?: (clipData: ClipCreateValues) => void;
   isClipping?: boolean; // Added for button state
 }
 
@@ -165,7 +166,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Scissors className="mr-2 h-4 w-4 text-muted-foreground" />
             Actions
           </h3>
-          <Button
+          <GenerateClipModal
+            disabled={disabled}
+            layers={layers}
+            isClipping={isClipping}
+            onClipCreate={onClipCreate}
+          />
+          {/* <Button
             className="w-full text-base py-3" // Slightly larger
             size="lg"
             disabled={
@@ -179,6 +186,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             {isClipping ? "Processing..." : "Create Clip"}
             {!isClipping && <Scissors className="ml-2 h-5 w-5" />}
           </Button>
+        */}
         </div>
       </CardContent>
     </Card>

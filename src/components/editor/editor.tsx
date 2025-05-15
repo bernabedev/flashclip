@@ -1,6 +1,7 @@
 import { api } from "@/services/api";
 import { ClipDataToSave } from "@/types/clip";
 import {
+  ClipCreateValues,
   type LayerState,
   LayoutAspectRatios,
   LayoutAspectRatiosString,
@@ -254,7 +255,7 @@ export default function Editor({ videoFile }: EditorProps) {
   const [isClipping, setIsClipping] = useState<boolean>(false);
 
   const { user, isSignedIn } = useUser();
-  const handleCreateClip = async () => {
+  const handleCreateClip = async (clipData: ClipCreateValues) => {
     if (!videoFile || !isVideoMetadataLoaded || duration <= 0 || isClipping) {
       toast.warning("Cannot create clip", {
         description: "Please load a video and wait for it to be ready.",
@@ -336,7 +337,7 @@ export default function Editor({ videoFile }: EditorProps) {
 
         const clipDataToSave: ClipDataToSave = {
           title:
-            data.title ||
+            clipData.title ||
             clipInstructions.outputMetadata.filename_suggestion ||
             `Clip from ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
           url: data.url,
@@ -362,6 +363,7 @@ export default function Editor({ videoFile }: EditorProps) {
                   ) * 100
               : inputVideoDimensions?.height || 720
             : inputVideoDimensions?.height || 720,
+          isPublic: clipData.isPublic,
         };
 
         try {

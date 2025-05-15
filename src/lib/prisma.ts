@@ -1,5 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "Please provide a DATABASE_URL in the environment variables."
+  );
+}
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient;
 };

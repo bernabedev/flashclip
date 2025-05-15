@@ -7,4 +7,5 @@ export interface ClipDataToSave {
   size?: number;
   width?: number;
   height?: number;
+  isPublic?: boolean;
 }

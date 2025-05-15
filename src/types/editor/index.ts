@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface LayerState {
   id: "content" | "camera";
   x: number;
@@ -94,3 +96,10 @@ export const LayoutGroups = [
 export interface OutputOptions {
   addBlurredBackground: boolean;
 }
+
+export const clipCreateSchema = z.object({
+  title: z.string().min(1).max(100),
+  isPublic: z.boolean(),
+});
+
+export type ClipCreateValues = z.infer<typeof clipCreateSchema>;
