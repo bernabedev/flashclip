@@ -382,7 +382,11 @@ export default function Editor({ videoFile }: EditorProps) {
         }
       }
 
-      router.push(`/clip/${Date.now()}?url=${data.url}`);
+      router.push(
+        `/clip/${Date.now()}?url=${data.url}&title=${clipData.title}&streamer=${
+          user?.username
+        }`
+      );
     } catch (error) {
       console.error("Error processing clip:", error);
       toast.error("Failed to process clip", {

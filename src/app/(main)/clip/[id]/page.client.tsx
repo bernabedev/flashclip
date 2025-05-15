@@ -13,13 +13,18 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function ClipReady({ clipUrl }: { clipUrl: string }) {
+export default function ClipReady({
+  clipUrl,
+  clipTitle,
+  streamerName,
+}: {
+  clipUrl: string;
+  clipTitle?: string;
+  streamerName?: string;
+}) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const clipTitle = "Increíble jugada en directo";
-  const streamerName = "StreamerPro";
 
   useEffect(() => {
     const updateProgress = () => {
@@ -150,10 +155,14 @@ export default function ClipReady({ clipUrl }: { clipUrl: string }) {
           <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
             ¡Tu clip está listo!
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">{clipTitle}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Por {streamerName}
-          </p>
+          {clipTitle && (
+            <p className="text-gray-600 dark:text-gray-300">{clipTitle}</p>
+          )}
+          {streamerName && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Por {streamerName}
+            </p>
+          )}
         </div>
 
         {/* Video player */}
