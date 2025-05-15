@@ -36,7 +36,7 @@ export function ClipStats() {
         <Card key={stat.title}>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            <stat.icon className="w-4 h-4 text-muted-foreground" />
+            <stat.icon className="w-4 h-4 text-secondary/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
