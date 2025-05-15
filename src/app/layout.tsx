@@ -1,6 +1,8 @@
+import { UMAMI_ID, UMAMI_URL } from "@/lib/constants";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -37,6 +39,11 @@ export default function RootLayout({
           {children}
         </body>
         <Toaster position="top-right" richColors closeButton />
+        <Script
+          async
+          src={`${UMAMI_URL}/script.js`}
+          data-website-id={UMAMI_ID}
+        />
       </html>
     </ClerkProvider>
   );
