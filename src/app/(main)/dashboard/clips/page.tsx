@@ -4,6 +4,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import Link from "next/link";
 
 export default async function ClipsPage() {
   return (
@@ -12,10 +13,12 @@ export default async function ClipsPage() {
         heading="My Clips"
         text="Manage all your created clips in one place."
       >
-        <Button className="gap-1">
-          <PlusCircle className="h-4 w-4" />
-          New Clip
-        </Button>
+        <Link href="/">
+          <Button className="gap-1">
+            <PlusCircle className="h-4 w-4" />
+            New Clip
+          </Button>
+        </Link>
       </DashboardHeader>
 
       <ClipsFilter />

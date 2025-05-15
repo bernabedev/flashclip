@@ -16,7 +16,7 @@ const stats = [
     icon: Database,
   },
   {
-    title: "Processing Time Saved",
+    title: "Time Saved",
     value: "32 hrs",
     change: "+5 hrs",
     icon: Clock,
