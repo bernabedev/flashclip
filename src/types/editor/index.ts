@@ -93,6 +93,36 @@ export const LayoutGroups = [
   },
 ];
 
+export interface SubtitleOptions {
+  enabled: boolean;
+  file?: File;
+  srtData?: string;
+  fontFamily: string;
+  fontSize: number;
+  textColor: string;
+  backgroundColor: string;
+}
+
+export interface EndScreenOptions {
+  enabled: boolean;
+  imageFile?: File;
+  durationSeconds: number;
+}
+
+export interface MusicOptions {
+  enabled: boolean;
+  audioFile?: File;
+  volume: number;
+}
+
+export type BackgroundType = "blur" | "color" | "image" | "none";
+
+export interface BackgroundOptions {
+  type: BackgroundType;
+  colorValue?: string;
+  imageFile?: File;
+}
+
 export interface OutputOptions {
   addBlurredBackground: boolean;
 }
@@ -103,3 +133,44 @@ export const clipCreateSchema = z.object({
 });
 
 export type ClipCreateValues = z.infer<typeof clipCreateSchema>;
+
+export interface RemotionInputProps {
+  videoFileName: string;
+  outputLayout: LayoutVariant;
+  layers: Array<{
+    id: "content" | "camera";
+    sourceRect: { x: number; y: number; width: number; height: number };
+    rotation: number;
+    zIndex: number;
+  }>;
+  originalVideoDimensions: { width: number; height: number };
+  durationInSeconds: number;
+
+  background: {
+    type: BackgroundType;
+    colorValue?: string;
+    imageFileName?: string;
+  };
+  subtitles: {
+    enabled: boolean;
+    srtFileName?: string;
+    fontFamily: string;
+    fontSize: number;
+    textColor: string;
+    backgroundColor: string;
+  };
+  endScreen: {
+    enabled: boolean;
+    imageFileName?: string;
+    durationSeconds: number;
+  };
+  music: {
+    enabled: boolean;
+    audioFileName?: string;
+    volume: number;
+  };
+
+  outputMetadata: {
+    filename_suggestion: string;
+  };
+}
