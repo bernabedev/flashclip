@@ -62,7 +62,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <Card className="h-full max-h-[calc(100vh-10rem)] overflow-y-auto border-l pt-0 pb-0">
+    <Card className="h-full max-h-[calc(100vh-9.5rem)] overflow-y-auto border-l pt-0 pb-0 mt-4">
       {/* Subtle background, shadow */}
       <CardHeader className="sticky top-0 bg-card/80 backdrop-blur-sm z-10 border-b px-4 pt-4 !pb-2">
         {/* Sticky header */}
