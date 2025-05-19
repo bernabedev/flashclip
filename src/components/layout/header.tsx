@@ -1,4 +1,7 @@
 import { cn } from "@/lib/utils";
+import { BugIcon } from "lucide-react";
+import Link from "next/link";
+import { Button } from "../ui/button";
 import LogoHeader from "./logo-header";
 import UserNavHeader from "./user-nav-header";
 
@@ -16,7 +19,15 @@ export default function Header({ classHeader }: HeaderProps) {
         )}
       >
         <LogoHeader />
-        <UserNavHeader />
+        <div className="flex items-center gap-4">
+          <Link href="/report-a-bug" target="_blank" rel="noopener noreferrer">
+            <Button variant="link" className="min-w-32">
+              <BugIcon className="size-4" />
+              Report a bug
+            </Button>
+          </Link>
+          <UserNavHeader />
+        </div>
       </header>
     </div>
   );
