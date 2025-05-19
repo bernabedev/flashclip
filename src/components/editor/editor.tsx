@@ -388,13 +388,12 @@ export default function Editor({ videoFile }: EditorProps) {
         }`
       );
     } catch (error) {
+      setIsClipping(false);
       console.error("Error processing clip:", error);
       toast.error("Failed to process clip", {
         id: "clip-process",
         description: "See console for details.",
       });
-    } finally {
-      setIsClipping(false);
     }
   };
 
