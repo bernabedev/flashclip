@@ -82,4 +82,4 @@ Effortlessly create perfectly formatted video clips for social media. Powered by
 
 ## 📄 License
 
-Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE.md) for details.
