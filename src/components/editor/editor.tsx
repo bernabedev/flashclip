@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/constants";
 import { api } from "@/services/api";
 import { ClipDataToSave } from "@/types/clip";
 import {
@@ -316,7 +317,7 @@ export default function Editor({ videoFile }: EditorProps) {
     formData.append("video", videoFile);
     formData.append("instructions", JSON.stringify(clipInstructions));
     try {
-      const res = await fetch("https://api.flashclip.app/clip/process", {
+      const res = await fetch(`${API_BASE_URL}/clip/process`, {
         method: "POST",
         body: formData,
       });
@@ -384,7 +385,7 @@ export default function Editor({ videoFile }: EditorProps) {
 
       router.push(
         `/clip/${Date.now()}?url=${data.url}&title=${clipData.title}&streamer=${
-          user?.username
+          user?.username || ""
         }`
       );
     } catch (error) {
