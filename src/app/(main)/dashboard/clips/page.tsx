@@ -35,7 +35,7 @@ export default async function ClipsPage() {
       </DashboardHeader>
 
       <ClipsFilter />
-      <ClipsTable clips={clips.data} />
+      <ClipsTable clips={clips.data} editable />
     </DashboardShell>
   );
 }

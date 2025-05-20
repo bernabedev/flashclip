@@ -2,7 +2,7 @@ import { Clip, Prisma } from "@/generated/prisma";
 import { PaginateFunction, paginator } from "@/lib/paginator";
 import { prisma } from "@/lib/prisma";
 
-const paginate: PaginateFunction = paginator({ perPage: 10 });
+const paginate: PaginateFunction = paginator({ perPage: 20 });
 
 export class ClipService {
   static async getClips() {

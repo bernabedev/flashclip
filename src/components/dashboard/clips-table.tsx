@@ -70,7 +70,15 @@ function StatusBadge({ status }: { status: string }) {
   return <Badge variant={variant}>{label}</Badge>;
 }
 
-export function ClipsTable({ clips }: { clips: Clip[] }) {
+export function ClipsTable({
+  clips,
+  editable = false,
+  classNameGrid,
+}: {
+  clips: Clip[];
+  editable?: boolean;
+  classNameGrid?: string;
+}) {
   const [selectedClips, setSelectedClips] = useState<string[]>([]);
 
   const toggleClip = (clipId: string) => {
@@ -114,16 +122,23 @@ export function ClipsTable({ clips }: { clips: Clip[] }) {
       )}
 
       {/* Clips grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        className={cn(
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
+          classNameGrid
+        )}
+      >
         {clips.map((clip) => (
           <Card key={clip.id} className="overflow-hidden pt-0">
             <div className="relative">
               <div className="absolute top-2 left-2 z-10">
-                <Checkbox
-                  checked={selectedClips.includes(clip.id)}
-                  onCheckedChange={() => toggleClip(clip.id)}
-                  className="h-5 w-5 bg-background/80 backdrop-blur-sm"
-                />
+                {editable && (
+                  <Checkbox
+                    checked={selectedClips.includes(clip.id)}
+                    onCheckedChange={() => toggleClip(clip.id)}
+                    className="h-5 w-5 bg-background/80 backdrop-blur-sm"
+                  />
+                )}
               </div>
               <div className="absolute top-2 right-2 z-10">
                 <StatusBadge status={clip.isPublic ? "published" : "private"} />
@@ -159,41 +174,43 @@ export function ClipsTable({ clips }: { clips: Clip[] }) {
                     Created {formatDate(clip.createdAt)}
                   </p>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="-mr-2">
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">Actions</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Play className="h-4 w-4 mr-2" />
-                      Play
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Share2 className="h-4 w-4 mr-2" />
-                      Share
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link className="h-4 w-4 mr-2" />
-                      Copy link
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive focus:text-destructive">
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {editable && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="-mr-2">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Actions</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <Play className="h-4 w-4 mr-2" />
+                        Play
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Share2 className="h-4 w-4 mr-2" />
+                        Share
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link className="h-4 w-4 mr-2" />
+                        Copy link
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-destructive focus:text-destructive">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
               </div>
               {clip.isPublic ? (
                 <div className="flex items-center mt-2 text-xs text-muted-foreground">
