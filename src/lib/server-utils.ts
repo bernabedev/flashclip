@@ -1,6 +1,6 @@
+import { User } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { User as PrismaUser } from "@prisma/client";
 
 export class ApiError extends Error {
   statusCode: number;
@@ -11,11 +11,11 @@ export class ApiError extends Error {
   }
 }
 
-export async function getOrCreateDbUserFromClerk(): Promise<PrismaUser> {
-  const { userId: clerkAuthUserId } = await auth();
+export async function getOrCreateDbUserFromClerk(): Promise<User> {
+  const { userId: clerkAuthUserId, sessionId } = await auth();
   const client = await clerkClient();
 
-  console.log("clerkAuthUserId", clerkAuthUserId);
+  console.log("clerkAuthUserId", clerkAuthUserId, "sessionId", sessionId);
 
   if (!clerkAuthUserId) {
     throw new ApiError("User not authenticated.", 401);

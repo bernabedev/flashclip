@@ -3,7 +3,10 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { RecentClips } from "@/components/dashboard/recent-clips";
+import { getOrCreateDbUserFromClerk } from "@/lib/server-utils";
+import { ClipService } from "@/services/db/clips";
 import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Dashboard",
@@ -13,6 +16,14 @@ export const metadata = {
 
 export default async function Dashboard() {
   const user = await currentUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  const dbUser = await getOrCreateDbUserFromClerk();
+  const clips = await ClipService.getClipsByUserId(dbUser.id);
+  // console.log({ clips, userId: dbUser.id });
 
   return (
     <DashboardShell>
@@ -27,7 +38,7 @@ export default async function Dashboard() {
 
       <div className="grid gap-6 md:grid-cols-7">
         <div className="col-span-4">
-          <RecentClips />
+          <RecentClips clips={clips.data} />
         </div>
         <div className="col-span-3">
           <QuickActions />

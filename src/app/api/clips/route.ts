@@ -1,7 +1,11 @@
+import { Clip, Prisma } from "@/generated/prisma";
+import { PaginateFunction, paginator } from "@/lib/paginator";
 import { prisma } from "@/lib/prisma";
 import { ApiError, getOrCreateDbUserFromClerk } from "@/lib/server-utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextResponse } from "next/server";
+
+const paginate: PaginateFunction = paginator({ perPage: 10 });
 
 interface CreateClipData {
   title: string;
@@ -58,8 +62,7 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     const dbUser = await getOrCreateDbUserFromClerk();
-
-    const clips = await prisma.clip.findMany({
+    const clips = await paginate<Clip, Prisma.ClipFindManyArgs>(prisma.clip, {
       where: {
         userId: dbUser.id,
       },

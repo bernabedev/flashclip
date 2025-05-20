@@ -5,7 +5,9 @@ export const api = {
   clip: {
     get: async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/clips`);
+        const response = await fetch(`${BASE_URL}/api/clips`, {
+          credentials: "include",
+        });
         const data = await response.json();
         console.log({ data });
         return data;
@@ -22,6 +24,7 @@ export const api = {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(body),
+          credentials: "include",
         });
 
         const saveData = await saveResponse.json();

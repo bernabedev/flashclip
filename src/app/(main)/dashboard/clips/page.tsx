@@ -3,10 +3,23 @@ import { ClipsTable } from "@/components/dashboard/clips-table";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { Button } from "@/components/ui/button";
+import { getOrCreateDbUserFromClerk } from "@/lib/server-utils";
+import { ClipService } from "@/services/db/clips";
+import { currentUser } from "@clerk/nextjs/server";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function ClipsPage() {
+  const user = await currentUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  const dbUser = await getOrCreateDbUserFromClerk();
+  const clips = await ClipService.getClipsByUserId(dbUser.id);
+
   return (
     <DashboardShell>
       <DashboardHeader
@@ -22,7 +35,7 @@ export default async function ClipsPage() {
       </DashboardHeader>
 
       <ClipsFilter />
-      <ClipsTable />
+      <ClipsTable clips={clips.data} />
     </DashboardShell>
   );
 }

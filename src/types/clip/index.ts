@@ -9,3 +9,9 @@ export interface ClipDataToSave {
   height?: number;
   isPublic?: boolean;
 }
+
+export interface ClipData extends ClipDataToSave {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
