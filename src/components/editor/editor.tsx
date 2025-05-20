@@ -44,6 +44,7 @@ const initialLayers: Record<LayerState["id"], LayerState> = {
 
 const initialOutputOptions: OutputOptions = {
   addBlurredBackground: false,
+  addAiSubtitles: false,
 };
 
 interface EditorProps {
@@ -305,6 +306,7 @@ export default function Editor({ videoFile }: EditorProps) {
       layers: visibleLayers,
       options: {
         addBlurredBackground: outputOptions.addBlurredBackground,
+        enable_ai_subtitles: outputOptions.addAiSubtitles,
       },
       outputMetadata: {
         filename_suggestion: `clip_${outputLayout}_${videoFile.name.replace(

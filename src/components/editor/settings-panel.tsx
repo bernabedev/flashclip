@@ -61,6 +61,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onOutputOptionsChange({ addBlurredBackground: checked });
   };
 
+  const handleGenerateSubtitlesChange = (checked: boolean) => {
+    onOutputOptionsChange({ addAiSubtitles: checked });
+  };
+
   return (
     <Card className="h-full max-h-[calc(100vh-9.5rem)] overflow-y-auto border-l pt-0 pb-0 mt-4">
       {/* Subtle background, shadow */}
@@ -131,7 +135,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               disabled={disabled}
             />
           </div>
-          {/* Add more output options here in the future */}
+          <div className="flex items-center justify-between space-x-2 p-3 rounded-md border bg-background/50 mt-2">
+            <div>
+              <Label
+                htmlFor="generate-subtitles"
+                className="cursor-pointer flex-grow"
+              >
+                Generate Subtitles
+              </Label>
+              <p className="text-[10px] text-muted-foreground">
+                Generates subtitles for the clip using AI.
+              </p>
+            </div>
+            <Switch
+              id="generate-subtitles"
+              checked={outputOptions.addAiSubtitles}
+              onCheckedChange={handleGenerateSubtitlesChange}
+              disabled={disabled}
+            />
+          </div>
         </div>
 
         <Separator />

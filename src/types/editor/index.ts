@@ -125,6 +125,7 @@ export interface BackgroundOptions {
 
 export interface OutputOptions {
   addBlurredBackground: boolean;
+  addAiSubtitles: boolean;
 }
 
 export const clipCreateSchema = z.object({
