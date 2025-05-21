@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { API_BASE_URL } from "@/lib/constants";
 import { saveVideoToDB } from "@/lib/save-clip-local";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -36,7 +37,7 @@ export default function GetClip() {
         return;
       }
 
-      const apiUrl = `https://api.flashclip.app/twitch/download/clip/${clipId}`;
+      const apiUrl = `${API_BASE_URL}/twitch/download/clip/${clipId}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
