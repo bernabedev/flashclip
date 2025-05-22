@@ -7,7 +7,7 @@ interface FooterProps {
 
 export default function Footer({ classFooter }: FooterProps) {
   return (
-    <div className="min-h-14 border border-dashed border-slate-200/90">
+    <div className="min-h-14 border-t border-dashed border-slate-200/90 dark:border-input/50">
       <footer
         className={cn(
           "max-w-7xl mx-auto h-14 flex justify-between items-center px-8 py-4",

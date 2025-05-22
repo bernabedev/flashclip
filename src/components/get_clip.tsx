@@ -99,7 +99,7 @@ export default function GetClip() {
   return (
     <>
       <FileUploader
-        className="w-full bg-white"
+        className="w-full"
         containerClassName="w-full"
         maxSizeMB={100}
         placeholderAccept="MP4, MOV, OGG, WEBM, 3GP"

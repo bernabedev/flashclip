@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { UMAMI_ID, UMAMI_URL } from "@/lib/constants";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
@@ -36,7 +37,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
         <Toaster position="top-right" richColors closeButton />
         <Script
