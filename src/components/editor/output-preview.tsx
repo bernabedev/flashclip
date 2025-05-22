@@ -6,6 +6,7 @@ import {
   type OutputOptions,
 } from "@/types/editor";
 import React, { useCallback, useEffect, useRef } from "react";
+import { Card } from "../ui/card";
 
 interface OutputPreviewProps {
   layout: LayoutVariant;
@@ -395,17 +396,17 @@ const OutputPreview: React.FC<OutputPreviewProps> = ({
 
   const containerAspectRatio = LayoutAspectRatios[layout];
   return (
-    <div
+    <Card
       ref={containerRef}
-      className="w-full h-full flex items-center justify-center overflow-hidden rounded-lg"
+      className="w-full p-2 flex items-center justify-center overflow-hidden rounded-xl"
     >
       <AspectRatio
         ratio={containerAspectRatio}
-        className="w-full h-full flex items-center justify-center"
+        className="w-full h-full flex items-center justify-center rounded-lg overflow-hidden"
       >
         <canvas ref={canvasRef} className="bg-black" />
       </AspectRatio>
-    </div>
+    </Card>
   );
 };
 

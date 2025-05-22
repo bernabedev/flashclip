@@ -410,19 +410,6 @@ export default function Editor({ videoFile }: EditorProps) {
 
   const isAppDisabled = !isVideoMetadataLoaded;
 
-  const inputContainerAspectRatio =
-    inputVideoDimensions &&
-    inputVideoDimensions.width > 0 &&
-    inputVideoDimensions.height > 0
-      ? `${inputVideoDimensions.width} / ${inputVideoDimensions.height}`
-      : "16 / 9";
-
-  const outputContainerAspectRatioValue = LayoutAspectRatios[outputLayout];
-  const outputContainerAspectRatioString =
-    typeof outputContainerAspectRatioValue === "number"
-      ? outputContainerAspectRatioValue.toString()
-      : "9 / 16";
-
   return (
     <>
       {isClipping && <ClipLoadingScreen />}
@@ -433,53 +420,37 @@ export default function Editor({ videoFile }: EditorProps) {
               <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
                 INPUT
               </h2>
-              <div
-                className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner "
-                style={{
-                  aspectRatio: inputContainerAspectRatio,
-                  maxHeight: "400px",
-                }}
-              >
-                <VideoStage
-                  videoSrc={videoSrc}
-                  layers={layers}
-                  selectedLayerId={selectedLayerId}
-                  currentTime={currentTime}
-                  videoElementRef={
-                    videoElementRef as React.RefObject<HTMLVideoElement>
-                  }
-                  inputVideoDimensions={inputVideoDimensions}
-                  onLayerUpdate={handleLayerUpdate}
-                  onLayerSelect={handleLayerSelect}
-                  onTimeUpdate={handleTimeUpdate}
-                  onDurationChange={handleDurationChange}
-                  onLoadedMetadata={handleLoadedMetadata}
-                />
-              </div>
+              <VideoStage
+                videoSrc={videoSrc}
+                layers={layers}
+                selectedLayerId={selectedLayerId}
+                currentTime={currentTime}
+                videoElementRef={
+                  videoElementRef as React.RefObject<HTMLVideoElement>
+                }
+                inputVideoDimensions={inputVideoDimensions}
+                onLayerUpdate={handleLayerUpdate}
+                onLayerSelect={handleLayerSelect}
+                onTimeUpdate={handleTimeUpdate}
+                onDurationChange={handleDurationChange}
+                onLoadedMetadata={handleLoadedMetadata}
+              />
             </div>
 
             <div className="flex flex-col md:flex-[1_1_0%] min-h-[250px] md:min-h-0 overflow-hidden">
               <h2 className="text-sm sm:text-base font-semibold mb-2 text-muted-foreground flex-shrink-0">
                 OUTPUT PREVIEW
               </h2>
-              <div
-                className="flex-grow flex items-center justify-center relative bg-slate-50 dark:bg-white/5 p-1 rounded-lg shadow-inner overflow-hidden"
-                style={{
-                  aspectRatio: outputContainerAspectRatioString,
-                  maxHeight: "624px",
-                }}
-              >
-                <OutputPreview
-                  layout={outputLayout}
-                  outputOptions={outputOptions}
-                  sourceVideoElement={videoElementRef.current}
-                  isPlaying={isPlaying}
-                  currentTime={currentTime}
-                  layers={layers}
-                  inputVideoDimensions={inputVideoDimensions}
-                  isVideoReady={isVideoMetadataLoaded}
-                />
-              </div>
+              <OutputPreview
+                layout={outputLayout}
+                outputOptions={outputOptions}
+                sourceVideoElement={videoElementRef.current}
+                isPlaying={isPlaying}
+                currentTime={currentTime}
+                layers={layers}
+                inputVideoDimensions={inputVideoDimensions}
+                isVideoReady={isVideoMetadataLoaded}
+              />
             </div>
           </div>
 

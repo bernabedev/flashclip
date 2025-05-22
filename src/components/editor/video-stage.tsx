@@ -7,6 +7,7 @@ import {
   type ResizableDelta,
   Rnd,
 } from "react-rnd";
+import { Card } from "../ui/card";
 
 interface VideoStageProps {
   videoSrc: string | null;
@@ -307,87 +308,88 @@ const VideoStage: React.FC<VideoStageProps> = ({
       : 16 / 9; // Fallback aspect ratio
 
   return (
-    <div
-      ref={stageRef}
-      className="relative w-full bg-black border border-muted rounded-md shadow-inner"
-      style={{
-        aspectRatio: stageAspectRatio,
-        perspective: "1000px", // For potential 3D transforms if needed later
-        maxWidth: "100%",
-        maxHeight: "100%",
-        margin: "auto", // Center the stage if container is larger
-      }}
-      onClick={() => onLayerSelect(null)} // Click on stage background deselects layers
-    >
-      {/* Video element remains mostly unchanged */}
-      {videoSrc && (
-        <video
-          ref={videoElementRef}
-          src={videoSrc}
-          // muted
-          onTimeUpdate={handleTimeUpdateInternal}
-          onDurationChange={handleDurationChangeInternal}
-          onLoadedMetadata={handleMetadataLoadedInternal}
-          playsInline // Important for mobile playback
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none" // Keep object-contain
-        />
-      )}
-      {/* Render Rnd components using calculated props */}
-      {videoSrc &&
-        inputVideoDimensions &&
-        stageLayout && // Only render layers when video and layout are ready
-        Object.values(layers)
-          .filter(
-            (layer) => layer?.visible && layer.width > 0 && layer.height > 0
-          ) // Filter visible and valid layers
-          .sort((a, b) => a.zIndex - b.zIndex) // Sort by zIndex
-          .map((layer) => {
-            if (!layer) return null; // Should not happen with filter, but safe guard
-            const rndProps = getRndProps(layer); // Calculate props based on current layout
-            const isSelected = selectedLayerId === layer.id;
+    <Card className="p-2">
+      <div
+        ref={stageRef}
+        className="relative w-full"
+        style={{
+          aspectRatio: stageAspectRatio,
+          perspective: "1000px", // For potential 3D transforms if needed later
+          maxWidth: "100%",
+          maxHeight: "100%",
+        }}
+        onClick={() => onLayerSelect(null)} // Click on stage background deselects layers
+      >
+        {/* Video element remains mostly unchanged */}
+        {videoSrc && (
+          <video
+            ref={videoElementRef}
+            src={videoSrc}
+            // muted
+            onTimeUpdate={handleTimeUpdateInternal}
+            onDurationChange={handleDurationChangeInternal}
+            onLoadedMetadata={handleMetadataLoadedInternal}
+            playsInline // Important for mobile playback
+            className="absolute inset-0 w-full h-full object-contain pointer-events-none rounded-md" // Keep object-contain
+          />
+        )}
+        {/* Render Rnd components using calculated props */}
+        {videoSrc &&
+          inputVideoDimensions &&
+          stageLayout && // Only render layers when video and layout are ready
+          Object.values(layers)
+            .filter(
+              (layer) => layer?.visible && layer.width > 0 && layer.height > 0
+            ) // Filter visible and valid layers
+            .sort((a, b) => a.zIndex - b.zIndex) // Sort by zIndex
+            .map((layer) => {
+              if (!layer) return null; // Should not happen with filter, but safe guard
+              const rndProps = getRndProps(layer); // Calculate props based on current layout
+              const isSelected = selectedLayerId === layer.id;
 
-            return (
-              <Rnd
-                key={layer.id}
-                {...rndProps} // Spread calculated size, position, and style
-                // Interaction handlers remain the same, they use the calculated layout internally
-                onDragStart={(e) => e.stopPropagation()} // Prevent stage deselect on drag start
-                onResizeStart={(e) => e.stopPropagation()} // Prevent stage deselect on resize start
-                onDragStop={(_e, d) => handleDragStop(layer.id, d)}
-                onResizeStop={(e, dir, ref, delta, pos) =>
-                  handleResizeStop(layer.id, e, dir, ref, delta, pos)
-                }
-                onClick={
-                  (e: React.MouseEvent | React.TouchEvent) =>
-                    handleLayerClick(e, layer.id) // Use specific click handler
-                }
-                bounds="parent" // Keep bounds to parent stage
-                lockAspectRatio={true}
-                // minWidth/minHeight can be set based on layout scale if needed
-                // minWidth={10 / layout.scale}
-                // minHeight={10 / layout.scale}
-              >
-                {/* Label for the layer */}
-                <div
-                  className={`absolute -top-5 left-1/2 -translate-x-1/2 w-max pointer-events-none transition-opacity duration-200 ${
-                    isSelected
-                      ? "opacity-100"
-                      : "opacity-0 group-hover:opacity-90"
-                  }`}
-                  style={{ zIndex: 51 }} // Ensure label is above the box outline/border
+              return (
+                <Rnd
+                  key={layer.id}
+                  {...rndProps} // Spread calculated size, position, and style
+                  // Interaction handlers remain the same, they use the calculated layout internally
+                  onDragStart={(e) => e.stopPropagation()} // Prevent stage deselect on drag start
+                  onResizeStart={(e) => e.stopPropagation()} // Prevent stage deselect on resize start
+                  onDragStop={(_e, d) => handleDragStop(layer.id, d)}
+                  onResizeStop={(e, dir, ref, delta, pos) =>
+                    handleResizeStop(layer.id, e, dir, ref, delta, pos)
+                  }
+                  onClick={
+                    (e: React.MouseEvent | React.TouchEvent) =>
+                      handleLayerClick(e, layer.id) // Use specific click handler
+                  }
+                  bounds="parent" // Keep bounds to parent stage
+                  lockAspectRatio={true}
+                  // minWidth/minHeight can be set based on layout scale if needed
+                  // minWidth={10 / layout.scale}
+                  // minHeight={10 / layout.scale}
                 >
-                  <span
-                    className={cn(
-                      "text-white text-xs px-1.5 py-0.5 rounded bg-primary"
-                    )}
+                  {/* Label for the layer */}
+                  <div
+                    className={`absolute -top-5 left-1/2 -translate-x-1/2 w-max pointer-events-none transition-opacity duration-200 ${
+                      isSelected
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-90"
+                    }`}
+                    style={{ zIndex: 51 }} // Ensure label is above the box outline/border
                   >
-                    {capitalize(layer.id)}
-                  </span>
-                </div>
-              </Rnd>
-            );
-          })}
-    </div>
+                    <span
+                      className={cn(
+                        "text-white text-xs px-1.5 py-0.5 rounded bg-primary"
+                      )}
+                    >
+                      {capitalize(layer.id)}
+                    </span>
+                  </div>
+                </Rnd>
+              );
+            })}
+      </div>
+    </Card>
   );
 };
 
