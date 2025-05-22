@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -182,35 +188,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </p>
           )}
         </div>
-        <Separator className="mb-0" />
-        <div className="sticky bottom-0 bg-white/90 py-8 backdrop-blur-sm z-10 outline-white outline-4">
-          <h3 className="text-sm font-medium flex items-center mb-2">
-            <Scissors className="mr-2 h-4 w-4 text-muted-foreground" />
-            Actions
-          </h3>
-          <GenerateClipModal
-            disabled={disabled}
-            layers={layers}
-            isClipping={isClipping}
-            onClipCreate={onClipCreate}
-          />
-          {/* <Button
-            className="w-full text-base py-3" // Slightly larger
-            size="lg"
-            disabled={
-              disabled ||
-              !Object.values(layers).some((l) => l.visible) ||
-              isClipping
-            }
-            onClick={onClipCreate}
-            variant="default" // Make it primary
-          >
-            {isClipping ? "Processing..." : "Create Clip"}
-            {!isClipping && <Scissors className="ml-2 h-5 w-5" />}
-          </Button>
-        */}
-        </div>
       </CardContent>
+      <CardFooter className="sticky bottom-0 bg-card/30 py-4 backdrop-blur-sm z-10 outline-card outline-4 flex flex-col items-start">
+        <h3 className="text-sm font-medium flex items-center mb-2">
+          <Scissors className="mr-2 h-4 w-4 text-muted-foreground" />
+          Actions
+        </h3>
+        <GenerateClipModal
+          disabled={disabled}
+          layers={layers}
+          isClipping={isClipping}
+          onClipCreate={onClipCreate}
+        />
+      </CardFooter>
     </Card>
   );
 };
