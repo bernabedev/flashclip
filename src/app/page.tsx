@@ -17,7 +17,7 @@ export default function Home() {
           <Alert className="mb-10">
             <HandMetalIcon className="h-4 w-4 !text-primary" />
             <AlertTitle>You&apos;re in ninja mode!</AlertTitle>
-            <AlertDescription className="text-black/50 text-xs">
+            <AlertDescription className="text-black/50 dark:text-white/50 text-xs">
               No login, no trace. Log in to save clips and access your dashboard
               powers.
             </AlertDescription>
