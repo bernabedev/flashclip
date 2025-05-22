@@ -107,11 +107,11 @@ export default function GetClip() {
         onFileUpload={handleFileUpload}
       />
       <hr className="my-8" />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full">
         <form className="flex gap-2" onSubmit={downloadClip}>
           <Input
             placeholder="Enter Twitch Clip URL"
-            className="bg-white w-96"
+            className="bg-white md:w-96 w-full"
             value={clipUrl}
             onChange={(e) => {
               setClipUrl(e.target.value);

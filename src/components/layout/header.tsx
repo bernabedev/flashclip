@@ -15,12 +15,12 @@ export default function Header({ classHeader }: HeaderProps) {
     <div className="min-h-14 border-b border-dashed border-slate-200/90 dark:border-input/50">
       <header
         className={cn(
-          "max-w-7xl mx-auto h-14 flex items-center px-8 py-4 justify-between",
+          "max-w-7xl mx-auto h-14 flex items-center px-4 md:px-8 py-4 justify-between",
           classHeader
         )}
       >
         <LogoHeader />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Link
             href="/report-a-bug"
             target="_blank"
@@ -28,7 +28,7 @@ export default function Header({ classHeader }: HeaderProps) {
             className={buttonVariants({ variant: "link" })}
           >
             <BugIcon className="size-4" />
-            Report a bug
+            <span className="hidden md:inline">Report a </span>bug
           </Link>
           <UserNavHeader />
           <ModeToggle />

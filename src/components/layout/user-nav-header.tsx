@@ -45,10 +45,13 @@ export default function UserNavHeader() {
         {!isDashboard && (
           <Link
             href="/dashboard"
-            className={cn(buttonVariants({ variant: "default" }), "min-w-28")}
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "md:min-w-28"
+            )}
           >
             <LayoutDashboard className="size-4" />
-            Dashboard
+            <span className="hidden md:inline">Dashboard</span>
           </Link>
         )}
       </SignedIn>
