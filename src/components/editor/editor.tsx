@@ -307,6 +307,14 @@ export default function Editor({ videoFile }: EditorProps) {
       options: {
         addBlurredBackground: outputOptions.addBlurredBackground,
         enable_ai_subtitles: outputOptions.addAiSubtitles,
+        // add_end_screen: true,
+        // end_screen_type: "custom",
+        // custom_end_screen_url:
+        //   "https://i.ibb.co/sdPPs1Cy/Chat-GPT-Image-May-21-2025-10-50-55-AM.png",
+        // add_music: true,
+        // music_type: "custom",
+        // custom_music_url:
+        //   "https://cdn.pixabay.com/audio/2025/05/07/audio_f20a13e142.mp3",
       },
       outputMetadata: {
         filename_suggestion: `clip_${outputLayout}_${videoFile.name.replace(
