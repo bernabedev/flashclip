@@ -10,7 +10,10 @@ export default async function Demos() {
         Here you can see some demos of the app.
       </p>
       <div>
-        <ClipsTable clips={clips.data} classNameGrid="2xl:grid-cols-4" />
+        <ClipsTable
+          clips={clips.data}
+          classNameGrid="xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2"
+        />
       </div>
     </div>
   );

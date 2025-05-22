@@ -143,13 +143,14 @@ export function ClipsTable({
               <div className="absolute top-2 right-2 z-10">
                 <StatusBadge status={clip.isPublic ? "published" : "private"} />
               </div>
-              <div className="relative aspect-video bg-muted">
+              <div className="relative aspect-video bg-background">
                 <img
                   src={clip.thumbnailUrl || "/logo.webp"}
                   alt={clip.title}
                   className={cn(
                     "object-cover w-full h-full",
-                    !clip.thumbnailUrl && "opacity-20 object-contain"
+                    !clip.thumbnailUrl &&
+                      "opacity-10 object-contain size-16 mx-auto"
                   )}
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/50">

@@ -17,10 +17,11 @@ import {
 import { Clip } from "@/generated/prisma";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function RecentClips({ clips }: { clips: Clip[] }) {
   return (
-    <Card>
+    <Card className="overflow-hidden">
       <CardHeader className="flex flex-row items-center">
         <div>
           <CardTitle>Recent Clips</CardTitle>
@@ -41,10 +42,18 @@ export function RecentClips({ clips }: { clips: Clip[] }) {
       </CardHeader>
       <CardContent>
         {clips.length > 0 ? (
-          <div className="space-y-4 max-h-[300px] overflow-y-auto">
-            {clips.map((clip) => (
-              <div key={clip.id} className="flex items-center gap-4">
-                <div className="relative rounded-md overflow-hidden w-[120px] h-[68px] bg-slate-100 border-slate-200 border">
+          <ScrollArea className="space-y-4 h-[300px] pe-4">
+            {clips.map((clip, index) => (
+              <div
+                key={clip.id}
+                className={cn("flex items-center gap-4", index > 0 && "pt-2")}
+              >
+                <Card
+                  className={cn(
+                    "relative rounded-md overflow-hidden w-[120px] h-[68px] border p-0",
+                    !clip.thumbnailUrl && "py-4"
+                  )}
+                >
                   <img
                     src={clip.thumbnailUrl || "/logo.webp"}
                     alt={clip.title}
@@ -61,7 +70,7 @@ export function RecentClips({ clips }: { clips: Clip[] }) {
                   <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
                     {clip.duration ? (clip.duration / 1000).toFixed(2) : "0"}s
                   </div>
-                </div>
+                </Card>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium truncate">{clip.title}</h4>
                   <div className="flex items-center text-sm text-muted-foreground">
@@ -85,7 +94,7 @@ export function RecentClips({ clips }: { clips: Clip[] }) {
                 </DropdownMenu>
               </div>
             ))}
-          </div>
+          </ScrollArea>
         ) : (
           <div className="flex items-center justify-center min-h-[300px] pb-4">
             <div className="flex flex-col items-center gap-2">
