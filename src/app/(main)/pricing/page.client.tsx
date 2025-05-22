@@ -2,12 +2,13 @@
 
 import PricingCard from "@/components/princing/pricing-card";
 import { cn } from "@/lib/utils";
+import { CrownIcon, RocketIcon, TargetIcon } from "lucide-react";
 import { useState } from "react";
 
 const pricingPlans = [
   {
     name: "Free Plan",
-    emoji: "🚀",
+    emoji: <RocketIcon className="size-6" />,
     description: "Start Shining Without Spending a Dime",
     price: 0,
     features: [
@@ -21,7 +22,7 @@ const pricingPlans = [
   },
   {
     name: "Creator Plan",
-    emoji: "🎯",
+    emoji: <TargetIcon className="size-6" />,
     description: "Perfect for Growing Streamers",
     price: 12,
     features: [
@@ -36,7 +37,7 @@ const pricingPlans = [
   },
   {
     name: "Pro Plan",
-    emoji: "👑",
+    emoji: <CrownIcon className="size-6" />,
     description: "For Full-Time Content Creators",
     price: 29,
     features: [
@@ -58,22 +59,12 @@ export default function PricingSection() {
   );
 
   return (
-    <section className="py-20 px-4 md:px-6 max-w-7xl mx-auto">
+    <section className="pb-2 px-4 md:px-6 max-w-7xl mx-auto">
       <div className="text-center mb-12">
-        <h1
-          className={cn(
-            "text-4xl md:text-5xl font-bold mb-4",
-            "translate-y-[-20px] animate-[fade-in_0.5s_ease-out_forwards]"
-          )}
-        >
+        <h1 className={cn("text-4xl md:text-5xl font-bold mb-2")}>
           Choose Your Plan
         </h1>
-        <p
-          className={cn(
-            "text-muted-foreground text-lg max-w-2xl mx-auto",
-            "animate-[fade-in_0.5s_ease-out_0.2s_forwards]"
-          )}
-        >
+        <p className={cn("text-muted-foreground text-lg max-w-2xl mx-auto")}>
           Select the perfect plan to enhance your content creation journey
         </p>
       </div>
@@ -90,7 +81,7 @@ export default function PricingSection() {
               "px-6 py-2 rounded-full text-sm font-medium transition-all",
               billingCycle === "monthly"
                 ? "bg-primary text-primary-foreground"
-                : "text-foreground"
+                : "text-foreground cursor-pointer"
             )}
             onClick={() => setBillingCycle("monthly")}
           >
@@ -101,7 +92,7 @@ export default function PricingSection() {
               "px-6 py-2 rounded-full text-sm font-medium transition-all",
               billingCycle === "yearly"
                 ? "bg-primary text-primary-foreground"
-                : "text-foreground"
+                : "text-foreground cursor-pointer"
             )}
             onClick={() => setBillingCycle("yearly")}
           >

@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 
 interface PricingPlan {
   name: string;
-  emoji: string;
+  emoji: React.ReactNode;
   description: string;
   price: number;
   features: string[];
@@ -33,7 +33,7 @@ export default function PricingCard({ plan, billingCycle }: PricingCardProps) {
       )}
     >
       {plan.popular && (
-        <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-medium uppercase tracking-wider rounded-b-xl">
+        <div className="absolute dark:text-white top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-medium uppercase tracking-wider rounded-b-xl">
           Most Popular
         </div>
       )}
